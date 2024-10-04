@@ -4,20 +4,16 @@ import { Container } from "@/components/shared/container";
 import axiosInstance, { setAuthToken } from "@/services/instance";
 import React from "react";
 
-export default function Home() {
+export default function AuthPage() {
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
+
+    setAuthToken(localStorage.getItem("token"));
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const { data } = await axiosInstance.post("/api/auth/login", {
-                email,
-                password,
-            });
-            console.log(data);
-            localStorage.setItem("token", data.token);
-            setAuthToken(data.token);
+            await axiosInstance.post("/api/auth/add-user", { email, password });
         } catch (error) {
             console.error("Login failed", error);
         }
@@ -42,7 +38,7 @@ export default function Home() {
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
-                    <button type="submit">Login</button>
+                    <button type="submit">Register</button>
                 </form>
             </div>
         </Container>
