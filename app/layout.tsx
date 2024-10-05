@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Container } from "@/components/shared/container";
+import { Providers } from "@/components/shared/providers";
 
 export const metadata: Metadata = {
     title: "File storage",
@@ -15,7 +15,8 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body>
-                <header>
+                <Providers>
+                    {/* <header>
                     <Container>
                         <nav>
                             <ul className="flex items-center justify-between">
@@ -24,8 +25,9 @@ export default function RootLayout({
                             </ul>
                         </nav>
                     </Container>
-                </header>
-                {children}
+                </header> */}
+                    {children}
+                </Providers>
             </body>
         </html>
     );

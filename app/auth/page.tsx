@@ -2,13 +2,16 @@
 
 import { Container } from "@/components/shared/container";
 import axiosInstance, { setAuthToken } from "@/services/instance";
+import { useSession } from "next-auth/react";
 import React from "react";
 
 export default function AuthPage() {
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
-
-    setAuthToken(localStorage.getItem("token"));
+    const { data: session } = useSession();
+    if (session) {
+        setAuthToken(session?.accessToken);
+    }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
