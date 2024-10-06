@@ -12,7 +12,7 @@ export const authOptions: AuthOptions = {
             },
             async authorize(credentials) {
                 const { data } = await axiosInstance.post(
-                    "/api/auth/login",
+                    "/auth/login",
                     credentials
                 );
 
@@ -29,6 +29,7 @@ export const authOptions: AuthOptions = {
     secret: process.env.NEXTAUTH_SECRET,
     session: {
         strategy: "jwt",
+        maxAge: 60 * 60,
     },
     callbacks: {
         async jwt({ token, user }) {

@@ -2,7 +2,7 @@
 
 import { Container } from "@/components/shared/container";
 import { Files } from "@/components/shared/files";
-import axiosInstance, { setAuthToken } from "@/services/instance";
+import axiosInstance from "@/services/instance";
 import { useSession } from "next-auth/react";
 import React from "react";
 
@@ -37,7 +37,6 @@ export default function FilesPage() {
     };
 
     if (session) {
-        setAuthToken(session?.accessToken);
         return (
             <Container className="flex items-center justify-center min-h-screen">
                 <div>
