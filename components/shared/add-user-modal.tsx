@@ -15,14 +15,14 @@ import { RegisterForm } from "./form/auth/register-form";
 
 interface Props {
     open: boolean;
-    setRefresh: (value: boolean) => void;
+    onUserAdded: () => void;
     onClose: () => void;
     className?: string;
 }
 
 export const AddUserModal: React.FC<Props> = ({
     open,
-    setRefresh,
+    onUserAdded,
     onClose,
     className,
 }) => {
@@ -41,7 +41,7 @@ export const AddUserModal: React.FC<Props> = ({
                     </DialogDescription>
                 </DialogHeader>
 
-                <RegisterForm setRefresh={setRefresh} onClose={handleClose} />
+                <RegisterForm onUserAdded={onUserAdded} onClose={handleClose} />
             </DialogContent>
         </Dialog>
     );

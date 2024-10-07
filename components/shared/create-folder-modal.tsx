@@ -16,6 +16,7 @@ import { Api } from "@/services/api-client";
 
 interface Props {
     userId: number;
+    parentId: number | undefined;
     open: boolean;
     onClose: () => void;
     className?: string;
@@ -23,6 +24,7 @@ interface Props {
 
 export const CreateFolderModal: React.FC<Props> = ({
     userId,
+    parentId,
     open,
     onClose,
     className,
@@ -38,6 +40,7 @@ export const CreateFolderModal: React.FC<Props> = ({
             const resp = await Api.folders.createFolder({
                 name: input,
                 userId,
+                parentId,
             });
             onClose();
             console.log(resp);

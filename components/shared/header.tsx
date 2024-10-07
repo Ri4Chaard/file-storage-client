@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { Container } from "./container";
 import { Button } from "../ui/button";
 import { CreateFolderButton } from "./create-folder-button";
+import { AddFileButton } from "./add-file-button";
 
 interface Props {
     className?: string;
@@ -13,6 +14,7 @@ export const Header: React.FC<Props> = ({ className }) => {
         <header className={cn("", className)}>
             <Container>
                 <CreateFolderButton />
+                <AddFileButton />
             </Container>
         </header>
     );

@@ -11,12 +11,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Api } from "@/services/api-client";
 
 interface Props {
-    setRefresh: (value: boolean) => void;
+    onUserAdded: () => void;
     onClose?: VoidFunction;
     className?: string;
 }
 
-export const RegisterForm: React.FC<Props> = ({ setRefresh, onClose }) => {
+export const RegisterForm: React.FC<Props> = ({ onUserAdded, onClose }) => {
     const form = useForm<TFormRegisterValues>({
         resolver: zodResolver(formRegisterSchema),
         defaultValues: {
@@ -29,7 +29,7 @@ export const RegisterForm: React.FC<Props> = ({ setRefresh, onClose }) => {
     const onSubmit = async (data: TFormRegisterValues) => {
         try {
             await Api.auth.createUser(data);
-            setRefresh?.(true);
+            onUserAdded();
             onClose?.();
         } catch (e) {
             console.log(e);

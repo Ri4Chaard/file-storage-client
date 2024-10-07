@@ -3,16 +3,15 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
-import { CreateFolderModal } from "./create-folder-modal";
 import { useParams } from "next/navigation";
+import { AddFileModal } from "./add-file-modal";
 
 interface Props {
     className?: string;
 }
 
-export const CreateFolderButton: React.FC<Props> = ({ className }) => {
-    const [openCreateFolderModal, setOpenCreateFolderModal] =
-        React.useState(false);
+export const AddFileButton: React.FC<Props> = ({ className }) => {
+    const [openAddFileModal, setOpenAddFileModal] = React.useState(false);
 
     const params = useParams();
     const parentId =
@@ -23,18 +22,18 @@ export const CreateFolderButton: React.FC<Props> = ({ className }) => {
 
     return (
         <>
-            <CreateFolderModal
+            <AddFileModal
                 userId={Number(params.id[0])}
                 parentId={parentId}
-                open={openCreateFolderModal}
-                onClose={() => setOpenCreateFolderModal(false)}
+                open={openAddFileModal}
+                onClose={() => setOpenAddFileModal(false)}
             />
 
             <Button
-                onClick={() => setOpenCreateFolderModal(true)}
+                onClick={() => setOpenAddFileModal(true)}
                 className={cn("", className)}
             >
-                Create folder
+                Add file
             </Button>
         </>
     );
