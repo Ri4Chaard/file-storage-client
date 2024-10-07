@@ -1,7 +1,6 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import { Container } from "./container";
-import { Button } from "../ui/button";
 import { CreateFolderButton } from "./create-folder-button";
 import { AddFileButton } from "./add-file-button";
 
@@ -11,7 +10,7 @@ interface Props {
 
 export const Header: React.FC<Props> = ({ className }) => {
     return (
-        <header className={cn("", className)}>
+        <header className={cn("mb-10", className)}>
             <Container>
                 <CreateFolderButton />
                 <AddFileButton />

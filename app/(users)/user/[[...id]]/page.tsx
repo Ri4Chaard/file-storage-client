@@ -1,6 +1,5 @@
 import { Container } from "@/components/shared/container";
-import { UserFiles } from "@/components/shared/user-files";
-import { UserFolders } from "@/components/shared/user-folders";
+import { UserDisk } from "@/components/shared/user-disk";
 
 export default function UserPage({ params }: { params: { id: String[] } }) {
     const parentId =
@@ -9,8 +8,10 @@ export default function UserPage({ params }: { params: { id: String[] } }) {
             : undefined;
     return (
         <Container>
-            <UserFolders userId={Number(params.id[0])} parentId={parentId} />
-            <UserFiles userId={Number(params.id[0])} parentId={parentId} />
+            <UserDisk
+                userId={Number(params.id[0])}
+                folderId={Number(parentId)}
+            />
         </Container>
     );
 }

@@ -13,6 +13,7 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Api } from "@/services/api-client";
+import { useUserDisk } from "@/hooks/use-user-disk";
 
 interface Props {
     userId: number;
@@ -30,6 +31,7 @@ export const CreateFolderModal: React.FC<Props> = ({
     className,
 }) => {
     const [input, setInput] = React.useState("");
+    const { handleUserDiskUpdate } = useUserDisk(userId, parentId);
 
     const handleClose = () => {
         onClose();
@@ -43,6 +45,7 @@ export const CreateFolderModal: React.FC<Props> = ({
                 parentId,
             });
             onClose();
+            handleUserDiskUpdate();
             console.log(resp);
         } catch (e) {
             console.log(e);
