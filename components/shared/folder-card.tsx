@@ -1,6 +1,7 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import { Folder } from "lucide-react";
+import { Button } from "../ui/button";
 
 interface Props {
     name: string;
@@ -9,7 +10,7 @@ interface Props {
 
 export const FolderCard: React.FC<Props> = ({ name, className }) => {
     return (
-        <div
+        <Button
             className={cn(
                 "w-[100px] h-[100px] border rounded-md flex flex-col items-center justify-center",
                 className
@@ -17,6 +18,6 @@ export const FolderCard: React.FC<Props> = ({ name, className }) => {
         >
             <Folder />
             <h2>{name}</h2>
-        </div>
+        </Button>
     );
 };

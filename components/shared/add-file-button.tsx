@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { useParams } from "next/navigation";
 import { AddFileModal } from "./add-file-modal";
+import { FilePlus } from "lucide-react";
 
 interface Props {
     className?: string;
@@ -18,7 +19,6 @@ export const AddFileButton: React.FC<Props> = ({ className }) => {
         params.id.length > 1
             ? Number(params.id[params.id.length - 1])
             : undefined;
-    console.log(parentId);
 
     return (
         <>
@@ -30,10 +30,11 @@ export const AddFileButton: React.FC<Props> = ({ className }) => {
             />
 
             <Button
+                variant="outline"
                 onClick={() => setOpenAddFileModal(true)}
                 className={cn("", className)}
             >
-                Add file
+                <FilePlus />
             </Button>
         </>
     );

@@ -13,7 +13,7 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Api } from "@/services/api-client";
-import { useUserDisk } from "@/hooks/use-user-disk";
+import { useUserDiskStore } from "@/store/user-disk";
 
 interface Props {
     userId: number;
@@ -31,25 +31,10 @@ export const CreateFolderModal: React.FC<Props> = ({
     className,
 }) => {
     const [input, setInput] = React.useState("");
-    const { handleUserDiskUpdate } = useUserDisk(userId, parentId);
+    const { createFolder } = useUserDiskStore();
 
     const handleClose = () => {
         onClose();
-    };
-
-    const createFolder = async () => {
-        try {
-            const resp = await Api.folders.createFolder({
-                name: input,
-                userId,
-                parentId,
-            });
-            onClose();
-            handleUserDiskUpdate();
-            console.log(resp);
-        } catch (e) {
-            console.log(e);
-        }
     };
 
     return (
@@ -68,7 +53,14 @@ export const CreateFolderModal: React.FC<Props> = ({
                 />
 
                 <DialogFooter>
-                    <Button onClick={createFolder}>Create</Button>
+                    <Button
+                        onClick={() => {
+                            handleClose();
+                            createFolder(input, userId, parentId);
+                        }}
+                    >
+                        Create
+                    </Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

@@ -6,6 +6,7 @@ export default function UserPage({ params }: { params: { id: String[] } }) {
         params.id.length > 1
             ? Number(params.id[params.id.length - 1])
             : undefined;
+
     return (
         <Container>
             <UserDisk

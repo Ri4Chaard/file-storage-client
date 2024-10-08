@@ -13,6 +13,7 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Api } from "@/services/api-client";
+import { useUserDiskStore } from "@/store/user-disk";
 
 interface Props {
     userId: number;
@@ -30,6 +31,8 @@ export const AddFileModal: React.FC<Props> = ({
     className,
 }) => {
     const [file, setFile] = useState<File | null>(null);
+
+    const { addFile } = useUserDiskStore();
 
     const handleClose = () => {
         onClose();
@@ -52,14 +55,8 @@ export const AddFileModal: React.FC<Props> = ({
         formData.append("userId", userId.toString());
         formData.append("folderId", parentId ? parentId.toString() : "");
 
-        try {
-            await Api.files.uploadFile(formData);
-            alert("File uploaded successfully!");
-            handleClose();
-        } catch (error) {
-            console.error("File upload failed", error);
-            alert("Failed to upload file.");
-        }
+        onClose();
+        addFile(formData);
     };
 
     return (

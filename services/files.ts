@@ -14,13 +14,3 @@ export interface IFile {
 export const uploadFile = async (data: FormData): Promise<IFile> => {
     return (await axiosInstance.post<IFile>(ApiRoutes.CREATE_FILE, data)).data;
 };
-
-export const getFiles = async (
-    userId: number,
-    folderId?: number
-): Promise<IFile[]> => {
-    const response = await axiosInstance.get(ApiRoutes.FILES, {
-        params: { userId, folderId },
-    });
-    return response.data;
-};

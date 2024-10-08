@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { CreateFolderModal } from "./create-folder-modal";
 import { useParams } from "next/navigation";
+import { FolderPlus } from "lucide-react";
 
 interface Props {
     className?: string;
@@ -19,7 +20,6 @@ export const CreateFolderButton: React.FC<Props> = ({ className }) => {
         params.id.length > 1
             ? Number(params.id[params.id.length - 1])
             : undefined;
-    console.log(parentId);
 
     return (
         <>
@@ -31,10 +31,11 @@ export const CreateFolderButton: React.FC<Props> = ({ className }) => {
             />
 
             <Button
+                variant="outline"
                 onClick={() => setOpenCreateFolderModal(true)}
                 className={cn("", className)}
             >
-                Create folder
+                <FolderPlus />
             </Button>
         </>
     );
