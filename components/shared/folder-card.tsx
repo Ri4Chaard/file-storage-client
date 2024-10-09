@@ -12,12 +12,14 @@ export const FolderCard: React.FC<Props> = ({ name, className }) => {
     return (
         <Button
             className={cn(
-                "w-[100px] h-[100px] border rounded-md flex flex-col items-center justify-center",
+                "w-[100px] h-[100px] flex flex-col items-center justify-center gap-3",
                 className
             )}
         >
             <Folder />
-            <h2>{name}</h2>
+            <h2 className="w-full text-xs overflow-hidden whitespace-pre-wrap break-words">
+                {name}
+            </h2>
         </Button>
     );
 };

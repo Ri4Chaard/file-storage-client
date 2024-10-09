@@ -47,17 +47,17 @@ export const RegisterForm: React.FC<Props> = ({ onUserAdded, onClose }) => {
                 <FormInput
                     name="password"
                     type="password"
-                    label="Password"
+                    label="Пароль"
                     required
                 />
                 <FormInput
                     name="confirmPassword"
                     type="password"
-                    label="Confirm password"
+                    label="Підтвердіть пароль"
                     required
                 />
                 <Button size="lg" loading={form.formState.isSubmitting}>
-                    Add user
+                    Додати
                 </Button>
             </form>
         </FormProvider>

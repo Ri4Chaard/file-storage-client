@@ -13,12 +13,14 @@ export const FileCard: React.FC<Props> = ({ name, className }) => {
         <Button
             variant="outline"
             className={cn(
-                "w-[100px] h-[100px] border rounded-md flex flex-col items-center justify-center",
+                "w-[100px] h-[100px] flex flex-col items-center justify-center gap-3",
                 className
             )}
         >
             <File />
-            <p>{name}</p>
+            <p className="w-full text-xs overflow-hidden whitespace-pre-wrap break-words">
+                {name}
+            </p>
         </Button>
     );
 };

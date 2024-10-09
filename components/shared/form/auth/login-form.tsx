@@ -39,7 +39,7 @@ export const LoginForm: React.FC<Props> = ({ className }) => {
 
     return (
         <div className={(cn(""), className)}>
-            <h1 className="font-bold text-center mb-5">Login form</h1>
+            <h1 className="font-bold text-center mb-5">Вхід до застосунка</h1>
             <FormProvider {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
@@ -50,12 +50,12 @@ export const LoginForm: React.FC<Props> = ({ className }) => {
                     <FormInput
                         name="password"
                         type="password"
-                        label="Password"
+                        label="Пароль"
                         required
                     />
 
                     <Button size="lg" loading={form.formState.isSubmitting}>
-                        Login
+                        Вхід
                     </Button>
                 </form>
             </FormProvider>

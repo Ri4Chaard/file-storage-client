@@ -41,10 +41,9 @@ export const CreateFolderModal: React.FC<Props> = ({
         <Dialog open={open} onOpenChange={handleClose}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Create folder</DialogTitle>
+                    <DialogTitle>Створення папки</DialogTitle>
                     <DialogDescription>
-                        Make changes to your profile here. Click save when
-                        you're done.
+                        Введіть назву папки, яку бажаєте створити
                     </DialogDescription>
                 </DialogHeader>
                 <Input
@@ -59,7 +58,7 @@ export const CreateFolderModal: React.FC<Props> = ({
                             createFolder(input, userId, parentId);
                         }}
                     >
-                        Create
+                        Створити
                     </Button>
                 </DialogFooter>
             </DialogContent>

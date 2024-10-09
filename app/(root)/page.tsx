@@ -3,8 +3,7 @@
 import { Container } from "@/components/shared/container";
 import { LoginForm } from "@/components/shared/form/auth/login-form";
 import { Loader } from "lucide-react";
-import { signIn, signOut, useSession } from "next-auth/react";
-import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import React from "react";
 
@@ -22,8 +21,11 @@ export default function Home() {
     if (session) {
         if (session.user.role === "USER") {
             redirect(`/user/${session.user.id}`);
+        } else if (session.user.role === "ADMIN") {
+            redirect("/admin");
+        } else {
+            redirect("/");
         }
-        redirect("/profile");
     }
 
     return (

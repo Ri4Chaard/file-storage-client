@@ -63,14 +63,14 @@ export const AddFileModal: React.FC<Props> = ({
         <Dialog open={open} onOpenChange={handleClose}>
             <DialogContent className={cn("sm:max-w-[425px]", className)}>
                 <DialogHeader>
-                    <DialogTitle>Add file</DialogTitle>
+                    <DialogTitle>Завантаження файлу</DialogTitle>
                     <DialogDescription>
-                        Choose a file to upload to the selected folder.
+                        Оберіть файл для завантаження в обрану папку.
                     </DialogDescription>
                 </DialogHeader>
                 <Input type="file" onChange={handleFileChange} />
                 <DialogFooter>
-                    <Button onClick={handleUpload}>Add</Button>
+                    <Button onClick={handleUpload}>Завантажити</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

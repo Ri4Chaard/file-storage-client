@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FolderCard } from "./folder-card";
 import { FileCard } from "./file-card";
-import { Loader } from "lucide-react";
+import { FolderX, Loader } from "lucide-react";
 import { useUserDiskStore } from "@/store/user-disk";
 import { Skeleton } from "../ui/skeleton";
 
@@ -23,6 +23,17 @@ export const UserDisk: React.FC<Props> = ({ userId, folderId, className }) => {
         fetchUserDisk(userId, folderId);
     }, []);
     const pathname = usePathname();
+
+    if (files.length === 0 && folders.length === 0) {
+        return (
+            <div className="mt-10 text-gray-300">
+                <div className="flex flex-col items-center justify-center gap-5">
+                    <FolderX width={150} height={150} />
+                </div>
+                <h1 className="text-center font-bold text-xl">Папка пуста</h1>
+            </div>
+        );
+    }
 
     return (
         <div className="mt-5">

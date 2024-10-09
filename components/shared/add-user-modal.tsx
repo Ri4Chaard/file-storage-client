@@ -34,10 +34,9 @@ export const AddUserModal: React.FC<Props> = ({
         <Dialog open={open} onOpenChange={handleClose}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Add user</DialogTitle>
+                    <DialogTitle>Додати користувача</DialogTitle>
                     <DialogDescription>
-                        Make changes to your profile here. Click save when
-                        you're done.
+                        Заповніть форму, щоб додати нового користувача
                     </DialogDescription>
                 </DialogHeader>
 
