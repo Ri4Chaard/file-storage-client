@@ -1,5 +1,6 @@
 import { ApiRoutes } from "./constants";
 import axiosInstance from "./instance";
+import { AxiosRequestConfig } from "axios";
 
 export interface IFile {
     id: number;
@@ -11,6 +12,11 @@ export interface IFile {
     path: string;
 }
 
-export const uploadFile = async (data: FormData): Promise<IFile> => {
-    return (await axiosInstance.post<IFile>(ApiRoutes.CREATE_FILE, data)).data;
+export const uploadFile = async (
+    data: FormData,
+    config?: AxiosRequestConfig
+): Promise<IFile> => {
+    return (
+        await axiosInstance.post<IFile>(ApiRoutes.CREATE_FILE, data, config)
+    ).data;
 };

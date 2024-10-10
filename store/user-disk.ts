@@ -1,7 +1,9 @@
 import { Api } from "@/services/api-client";
 import { IFile } from "@/services/files";
 import { Folder } from "@/services/folders";
+import { AxiosProgressEvent } from "axios";
 import { create } from "zustand";
+import { useUploadStore } from "./upload-store";
 
 export interface UserDiskState {
     folders: Folder[];
@@ -17,7 +19,7 @@ export interface UserDiskState {
         parentId?: number
     ) => Promise<void>;
 
-    addFile: (formData: FormData) => Promise<void>;
+    addFile: (formData: FormData, uploadId: string) => Promise<void>;
 }
 
 export const useUserDiskStore = create<UserDiskState>((set, get) => ({
@@ -66,9 +68,20 @@ export const useUserDiskStore = create<UserDiskState>((set, get) => ({
         }
     },
 
-    addFile: async (formData) => {
+    addFile: async (formData, uploadId) => {
+        const { updateUpload, removeUpload } = useUploadStore.getState();
+
         try {
-            await Api.files.uploadFile(formData);
+            await Api.files.uploadFile(formData, {
+                onUploadProgress: (progressEvent: AxiosProgressEvent) => {
+                    if (progressEvent.total !== undefined) {
+                        const progress = Math.round(
+                            (progressEvent.loaded / progressEvent.total) * 100
+                        );
+                        updateUpload(uploadId, progress);
+                    }
+                },
+            });
             const userId = Number(formData.get("userId"));
             const parentId = formData.get("folderId");
             const { folders, files } = await Api.users.getUserDisk(
@@ -81,6 +94,7 @@ export const useUserDiskStore = create<UserDiskState>((set, get) => ({
             set({ error: true });
         } finally {
             set({ loading: false });
+            removeUpload(uploadId);
         }
     },
 }));

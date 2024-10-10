@@ -12,8 +12,9 @@ import {
 } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { Api } from "@/services/api-client";
 import { useUserDiskStore } from "@/store/user-disk";
+import { useUploadStore } from "@/store/upload-store";
+import toast from "react-hot-toast";
 
 interface Props {
     userId: number;
@@ -31,8 +32,8 @@ export const AddFileModal: React.FC<Props> = ({
     className,
 }) => {
     const [file, setFile] = useState<File | null>(null);
-
     const { addFile } = useUserDiskStore();
+    const { addUpload } = useUploadStore();
 
     const handleClose = () => {
         onClose();
@@ -50,13 +51,21 @@ export const AddFileModal: React.FC<Props> = ({
             return;
         }
 
+        const uploadId = Date.now().toString(); // Уникальный идентификатор загрузки
+        addUpload(uploadId, `Завантаження файлу: ${file.name}`); // Добавьте загрузку
+
         const formData = new FormData();
         formData.append("file", file);
         formData.append("userId", userId.toString());
         formData.append("folderId", parentId ? parentId.toString() : "");
 
         onClose();
-        addFile(formData);
+
+        toast.promise(addFile(formData, uploadId), {
+            loading: "Файл завантажується",
+            success: "Файл успішно завантажено",
+            error: "Помилка завантаження файлу",
+        });
     };
 
     return (
@@ -69,8 +78,11 @@ export const AddFileModal: React.FC<Props> = ({
                     </DialogDescription>
                 </DialogHeader>
                 <Input type="file" onChange={handleFileChange} />
+
                 <DialogFooter>
-                    <Button onClick={handleUpload}>Завантажити</Button>
+                    <Button onClick={handleUpload} disabled={!file}>
+                        Завантажити
+                    </Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

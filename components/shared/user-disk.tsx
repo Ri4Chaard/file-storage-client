@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FolderCard } from "./folder-card";
 import { FileCard } from "./file-card";
-import { FolderX, Loader } from "lucide-react";
+import { FolderX } from "lucide-react";
 import { useUserDiskStore } from "@/store/user-disk";
 import { Skeleton } from "../ui/skeleton";
 
@@ -23,6 +23,13 @@ export const UserDisk: React.FC<Props> = ({ userId, folderId, className }) => {
         fetchUserDisk(userId, folderId);
     }, []);
     const pathname = usePathname();
+
+    const isVideoFile = (fileName: string) => {
+        const videoExtensions = [".mp4", ".avi", ".mov", ".mkv"];
+        return videoExtensions.some((ext) =>
+            fileName.toLowerCase().endsWith(ext)
+        );
+    };
 
     if (files.length === 0 && folders.length === 0) {
         return (
@@ -61,13 +68,12 @@ export const UserDisk: React.FC<Props> = ({ userId, folderId, className }) => {
                             </Link>
                         ))}
                         {files.map((file) => (
-                            <a
+                            <FileCard
                                 key={file.id}
-                                href={`http://localhost:8000/uploads/${file.name}`}
-                                target="_blank"
-                            >
-                                <FileCard name={file.name} />
-                            </a>
+                                name={file.name}
+                                fileUrl={`http://localhost:8000/uploads/${file.name}`}
+                                isVideo={isVideoFile(file.name)}
+                            />
                         ))}
                     </>
                 )}
