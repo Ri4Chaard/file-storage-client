@@ -28,6 +28,7 @@ export const useUserDiskStore = create<UserDiskState>((set, get) => ({
     error: false,
     loading: true,
 
+    // Функция для загрузки содержимого диска пользователя
     fetchUserDisk: async (userId, parentId) => {
         try {
             set({ loading: true, error: false });
@@ -35,7 +36,6 @@ export const useUserDiskStore = create<UserDiskState>((set, get) => ({
                 userId,
                 parentId
             );
-
             set({ folders, files });
         } catch (e) {
             console.log(e);
@@ -45,20 +45,15 @@ export const useUserDiskStore = create<UserDiskState>((set, get) => ({
         }
     },
 
+    // Функция для создания папки
     createFolder: async (name, userId, parentId) => {
         try {
             set({ loading: true, error: false });
-
-            await Api.folders.createFolder({
-                name,
-                userId,
-                parentId,
-            });
+            await Api.folders.createFolder({ name, userId, parentId });
             const { folders, files } = await Api.users.getUserDisk(
                 userId,
                 parentId
             );
-
             set({ folders, files });
         } catch (e) {
             console.log(e);
@@ -68,6 +63,7 @@ export const useUserDiskStore = create<UserDiskState>((set, get) => ({
         }
     },
 
+    // Функция для загрузки файлов с отслеживанием прогресса
     addFile: async (formData, uploadId) => {
         const { updateUpload, removeUpload } = useUploadStore.getState();
 
@@ -82,6 +78,7 @@ export const useUserDiskStore = create<UserDiskState>((set, get) => ({
                     }
                 },
             });
+
             const userId = Number(formData.get("userId"));
             const parentId = formData.get("folderId");
             const { folders, files } = await Api.users.getUserDisk(

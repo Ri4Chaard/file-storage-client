@@ -31,41 +31,48 @@ export const AddFileModal: React.FC<Props> = ({
     onClose,
     className,
 }) => {
-    const [file, setFile] = useState<File | null>(null);
+    const [files, setFiles] = useState<File[]>([]);
     const { addFile } = useUserDiskStore();
-    const { addUpload } = useUploadStore();
+    const { addUpload, removeUpload } = useUploadStore();
 
     const handleClose = () => {
         onClose();
+        setFiles([]);
     };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
-            setFile(e.target.files[0]);
+            setFiles(Array.from(e.target.files));
         }
     };
 
     const handleUpload = async () => {
-        if (!file) {
-            alert("Please select a file.");
+        if (files.length === 0) {
+            alert("Please select at least one file.");
             return;
         }
 
-        const uploadId = Date.now().toString(); // Уникальный идентификатор загрузки
-        addUpload(uploadId, `Завантаження файлу: ${file.name}`); // Добавьте загрузку
+        files.forEach((file) => {
+            const uploadId = `${file.name}-${Date.now()}`;
+            addUpload(uploadId, `Завантаження файлу: ${file.name}`);
 
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("userId", userId.toString());
-        formData.append("folderId", parentId ? parentId.toString() : "");
+            const formData = new FormData();
+            formData.append("files", file);
+            formData.append("userId", userId.toString());
+            formData.append("folderId", parentId ? parentId.toString() : "");
+
+            addFile(formData, uploadId)
+                .then(() => {
+                    toast.success(`${file.name} успішно завантажено`);
+                    removeUpload(uploadId);
+                })
+                .catch(() => {
+                    toast.error(`Помилка завантаження ${file.name}`);
+                    removeUpload(uploadId);
+                });
+        });
 
         onClose();
-
-        toast.promise(addFile(formData, uploadId), {
-            loading: "Файл завантажується",
-            success: "Файл успішно завантажено",
-            error: "Помилка завантаження файлу",
-        });
     };
 
     return (
@@ -74,13 +81,17 @@ export const AddFileModal: React.FC<Props> = ({
                 <DialogHeader>
                     <DialogTitle>Завантаження файлу</DialogTitle>
                     <DialogDescription>
-                        Оберіть файл для завантаження в обрану папку.
+                        Оберіть файли для завантаження в обрану папку.
                     </DialogDescription>
                 </DialogHeader>
-                <Input type="file" onChange={handleFileChange} />
+
+                <Input type="file" multiple onChange={handleFileChange} />
 
                 <DialogFooter>
-                    <Button onClick={handleUpload} disabled={!file}>
+                    <Button
+                        onClick={handleUpload}
+                        disabled={files.length === 0}
+                    >
                         Завантажити
                     </Button>
                 </DialogFooter>

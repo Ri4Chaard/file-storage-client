@@ -9,6 +9,7 @@ import { FileCard } from "./file-card";
 import { FolderX } from "lucide-react";
 import { useUserDiskStore } from "@/store/user-disk";
 import { Skeleton } from "../ui/skeleton";
+import { useSession } from "next-auth/react";
 
 interface Props {
     userId: number;
@@ -31,6 +32,26 @@ export const UserDisk: React.FC<Props> = ({ userId, folderId, className }) => {
         );
     };
 
+    if (useSession().status === "loading" || loading) {
+        return (
+            <div className="mt-5">
+                <div
+                    className={cn(
+                        "grid grid-cols-8 justify-items-center gap-5",
+                        className
+                    )}
+                >
+                    {[...Array(8)].map((_, index) => (
+                        <Skeleton
+                            key={index}
+                            className="w-[100px] h-[100px] rounded-md"
+                        />
+                    ))}
+                </div>
+            </div>
+        );
+    }
+
     if (files.length === 0 && folders.length === 0) {
         return (
             <div className="mt-10 text-gray-300">
@@ -50,33 +71,22 @@ export const UserDisk: React.FC<Props> = ({ userId, folderId, className }) => {
                     className
                 )}
             >
-                {loading ? (
-                    [...Array(8)].map((_, index) => (
-                        <Skeleton
-                            key={index}
-                            className="w-[100px] h-[100px] rounded-md"
-                        />
-                    ))
-                ) : (
-                    <>
-                        {folders.map((folder) => (
-                            <Link
-                                key={folder.id}
-                                href={`${pathname}/${String(folder.id)}`}
-                            >
-                                <FolderCard name={folder.name} />
-                            </Link>
-                        ))}
-                        {files.map((file) => (
-                            <FileCard
-                                key={file.id}
-                                name={file.name}
-                                fileUrl={`http://localhost:8000/uploads/${file.name}`}
-                                isVideo={isVideoFile(file.name)}
-                            />
-                        ))}
-                    </>
-                )}
+                {folders.map((folder) => (
+                    <Link
+                        key={folder.id}
+                        href={`${pathname}/${String(folder.id)}`}
+                    >
+                        <FolderCard name={folder.name} />
+                    </Link>
+                ))}
+                {files.map((file) => (
+                    <FileCard
+                        key={file.id}
+                        name={file.name}
+                        fileUrl={`http://localhost:8000/uploads/${file.name}`}
+                        isVideo={isVideoFile(file.name)}
+                    />
+                ))}
             </div>
         </div>
     );
