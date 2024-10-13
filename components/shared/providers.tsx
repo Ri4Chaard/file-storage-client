@@ -12,7 +12,7 @@ export const Providers: React.FC<PropsWithChildren> = ({ children }) => {
             <NextTopLoader />
             <Toaster />
             <UploadProgress />
-            <SessionProvider>{children}</SessionProvider>;
+            <SessionProvider>{children}</SessionProvider>
         </>
     );
 };

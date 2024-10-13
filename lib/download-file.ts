@@ -4,7 +4,7 @@ import { useUploadStore } from "@/store/upload-store";
 export const downloadFile = async (fileName: string) => {
     const uploadId = `${fileName}-${Date.now()}`;
     useUploadStore
-        .getInitialState()
+        .getState()
         .addUpload(uploadId, `Завантаження файлу: ${fileName}`);
     try {
         const data = await Api.files.downloadFile(fileName, {
@@ -14,9 +14,7 @@ export const downloadFile = async (fileName: string) => {
                 const progress = Math.round(
                     (progressEvent.loaded / progressEvent.total!) * 100
                 );
-                useUploadStore
-                    .getInitialState()
-                    .updateUpload(uploadId, progress);
+                useUploadStore.getState().updateUpload(uploadId, progress);
             },
         });
 
@@ -28,9 +26,9 @@ export const downloadFile = async (fileName: string) => {
         link.click();
         link.parentNode!.removeChild(link);
 
-        useUploadStore.getInitialState().removeUpload(uploadId);
+        useUploadStore.getState().removeUpload(uploadId);
     } catch (error) {
         console.error("Ошибка при скачивании файла:", error);
-        useUploadStore.getInitialState().removeUpload(uploadId);
+        useUploadStore.getState().removeUpload(uploadId);
     }
 };

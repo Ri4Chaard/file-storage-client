@@ -25,13 +25,6 @@ export const UserDisk: React.FC<Props> = ({ userId, folderId, className }) => {
     }, []);
     const pathname = usePathname();
 
-    const isVideoFile = (fileName: string) => {
-        const videoExtensions = [".mp4", ".avi", ".mov", ".mkv"];
-        return videoExtensions.some((ext) =>
-            fileName.toLowerCase().endsWith(ext)
-        );
-    };
-
     if (useSession().status === "loading" || loading) {
         return (
             <div className="mt-5">
@@ -84,7 +77,6 @@ export const UserDisk: React.FC<Props> = ({ userId, folderId, className }) => {
                         key={file.id}
                         name={file.name}
                         fileUrl={`http://localhost:8000/uploads/${file.name}`}
-                        isVideo={isVideoFile(file.name)}
                     />
                 ))}
             </div>
