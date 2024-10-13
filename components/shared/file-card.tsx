@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { File, Eye, Download } from "lucide-react";
 import { Button } from "../ui/button";
+import { useUploadStore } from "@/store/upload-store";
+import { downloadFile } from "@/lib/download-file";
 
 interface Props {
     name: string;
-    fileUrl: string; // The URL of the file for download or preview
-    isVideo?: boolean; // Whether the file is a video (add more types if needed)
+    fileUrl: string;
+    isVideo?: boolean;
     className?: string;
 }
 
@@ -20,6 +22,14 @@ export const FileCard: React.FC<Props> = ({
 
     const togglePreview = () => setShowPreview((prev) => !prev);
 
+    // Получаем прогресс загрузки из хранилища
+
+    const downloadProgress = useUploadStore(
+        (state) =>
+            state.uploads.find((download) => download.id === name)?.progress ||
+            0
+    );
+
     return (
         <div
             className={cn(
@@ -27,7 +37,6 @@ export const FileCard: React.FC<Props> = ({
                 className
             )}
         >
-            {/* File icon */}
             <Button
                 variant="outline"
                 className="w-full h-full flex flex-col items-center justify-center gap-2"
@@ -42,14 +51,24 @@ export const FileCard: React.FC<Props> = ({
                 <Button variant="ghost" size="icon" onClick={togglePreview}>
                     <Eye className="w-4 h-4" />
                 </Button>
-                <a href={fileUrl} target="_blank">
-                    <Button variant="ghost" size="icon">
-                        <Download className="w-4 h-4" />
-                    </Button>
-                </a>
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => downloadFile(name)}
+                >
+                    <Download className="w-4 h-4" />
+                </Button>
             </div>
 
-            {/* Preview Modal */}
+            {/* {downloadProgress > 0 && (
+                <div className="w-full bg-gray-200 rounded-full h-2.5 mt-1">
+                    <div
+                        className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
+                        style={{ width: `${downloadProgress}%` }}
+                    />
+                </div>
+            )} */}
+
             {showPreview && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
                     <div className="bg-white p-4 rounded-md">

@@ -20,3 +20,12 @@ export const uploadFile = async (
         await axiosInstance.post<IFile>(ApiRoutes.CREATE_FILE, data, config)
     ).data;
 };
+
+export const downloadFile = async (
+    fileName: string,
+    config?: AxiosRequestConfig
+): Promise<Blob> => {
+    return (
+        await axiosInstance.get<Blob>(ApiRoutes.GET_FILE + fileName, config)
+    ).data;
+};

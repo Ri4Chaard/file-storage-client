@@ -65,7 +65,7 @@ export const useUserDiskStore = create<UserDiskState>((set, get) => ({
 
     // Функция для загрузки файлов с отслеживанием прогресса
     addFile: async (formData, uploadId) => {
-        const { updateUpload, removeUpload } = useUploadStore.getState();
+        const { updateUpload } = useUploadStore.getState();
 
         try {
             await Api.files.uploadFile(formData, {
@@ -91,7 +91,6 @@ export const useUserDiskStore = create<UserDiskState>((set, get) => ({
             set({ error: true });
         } finally {
             set({ loading: false });
-            removeUpload(uploadId);
         }
     },
 }));
