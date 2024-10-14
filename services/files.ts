@@ -37,3 +37,7 @@ export const previewFile = async (
         await axiosInstance.get<Blob>(ApiRoutes.PREVIEW_FILE + fileName, config)
     ).data;
 };
+
+export const deleteFile = async (fileId: number): Promise<Object> => {
+    return (await axiosInstance.delete<Object>("/files/delete/" + fileId)).data;
+};

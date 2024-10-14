@@ -30,14 +30,14 @@ export const UserDisk: React.FC<Props> = ({ userId, folderId, className }) => {
             <div className="mt-5">
                 <div
                     className={cn(
-                        "grid grid-cols-8 justify-items-center gap-5",
+                        "grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4 sm:gap-5 justify-items-center",
                         className
                     )}
                 >
                     {[...Array(8)].map((_, index) => (
                         <Skeleton
                             key={index}
-                            className="w-[100px] h-[100px] rounded-md"
+                            className="w-[80px] h-[80px] sm:w-[100px] sm:h-[100px]"
                         />
                     ))}
                 </div>
@@ -60,23 +60,22 @@ export const UserDisk: React.FC<Props> = ({ userId, folderId, className }) => {
         <div className="mt-5">
             <div
                 className={cn(
-                    "grid grid-cols-8 justify-items-center gap-5",
+                    "grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4 sm:gap-5 justify-items-center",
                     className
                 )}
             >
                 {folders.map((folder) => (
-                    <Link
+                    <FolderCard
                         key={folder.id}
-                        href={`${pathname}/${String(folder.id)}`}
-                    >
-                        <FolderCard name={folder.name} />
-                    </Link>
+                        id={folder.id}
+                        name={folder.name}
+                    />
                 ))}
                 {files.map((file) => (
                     <FileCard
                         key={file.id}
+                        id={Number(file.id)}
                         name={file.name}
-                        fileUrl={`http://localhost:8000/uploads/${file.name}`}
                     />
                 ))}
             </div>

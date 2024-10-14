@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
-import { File, Eye, Download } from "lucide-react";
+import { File, Eye, Download, OctagonX } from "lucide-react";
 import { Button } from "../ui/button";
 import { downloadFile } from "@/lib/download-file";
 import toast from "react-hot-toast";
@@ -8,14 +8,23 @@ import { usePreviewFile } from "@/hooks/use-priview-file";
 import { useUploadStore } from "@/store/upload-store";
 import { usePreviewStore } from "@/store/preview-store";
 import { FilePreviewModal } from "./file-preview-modal";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { Api } from "@/services/api-client";
 
 interface Props {
+    id: number;
     name: string;
-    fileUrl: string;
     className?: string;
 }
 
-export const FileCard: React.FC<Props> = ({ name, className }) => {
+export const FileCard: React.FC<Props> = ({ id, name, className }) => {
     const { previewId, setPreviewId } = usePreviewStore();
     const isCurrentPreview = previewId === name;
     const togglePreview = () => {
@@ -41,80 +50,92 @@ export const FileCard: React.FC<Props> = ({ name, className }) => {
     return (
         <div
             className={cn(
-                "w-[100px] h-[100px] flex flex-col items-center",
+                "w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] flex flex-col items-center",
                 className
             )}
         >
-            <Button
-                variant="outline"
-                className="w-full h-full flex flex-col items-center justify-center gap-2"
-            >
-                <File />
-                <p className="w-full text-xs overflow-hidden whitespace-pre-wrap break-words">
-                    {name}
-                </p>
-            </Button>
-
-            <div className="flex gap-1">
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    disabled={previewProgress > 0 && previewProgress < 100}
-                    onClick={() => previewFile().then(togglePreview)}
-                >
-                    <Eye className="w-4 h-4" />
-                </Button>
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() =>
-                        downloadFile(name)
-                            .then(() => {
-                                toast.success(`${name} успішно завантажено`);
-                            })
-                            .catch(() => {
-                                toast.error(`Помилка завантаження ${name}`);
-                            })
-                    }
-                >
-                    <Download className="w-4 h-4" />
-                </Button>
-            </div>
-
-            {previewProgress > 0 && (
-                <div className="w-full bg-gray-200 rounded-full h-2.5 mt-1">
-                    <div
-                        className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
-                        style={{ width: `${previewProgress}%` }}
-                    />
-                </div>
-            )}
-
-            {/* {isCurrentPreview && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
-                    <div className="bg-white p-4 rounded-md">
-                        <button
-                            onClick={() => setPreviewId(null)}
-                            className="text-gray-600"
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button
+                        variant="outline"
+                        className="w-full h-full overflow-hidden flex flex-col items-center justify-center gap-2 relative"
+                    >
+                        <File className="z-10" />
+                        <p className="w-full z-10 text-xs sm:text-sm overflow-hidden text-center whitespace-pre-wrap break-words">
+                            {name}
+                        </p>
+                        <div
+                            className={
+                                "absolute -z-0 w-full bottom-0 bg-blue-600 transition-all"
+                            }
+                            style={{ height: `${previewProgress}%` }}
+                        />
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                    <DropdownMenuLabel className="text-center">
+                        {name}
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem asChild>
+                        <Button
+                            className="w-full flex"
+                            variant="ghost"
+                            size="icon"
+                            disabled={
+                                previewProgress > 0 && previewProgress < 100
+                            }
+                            onClick={() => previewFile().then(togglePreview)}
                         >
-                            Close
-                        </button>
-                        {isVideo ? (
-                            <video
-                                controls
-                                src={previewUrl}
-                                className="max-w-full max-h-full"
-                            />
-                        ) : (
-                            <img
-                                src={previewUrl}
-                                alt={name}
-                                className="max-h-[800px]"
-                            />
-                        )}
-                    </div>
-                </div>
-            )} */}
+                            <Eye className="w-4 h-4 mr-2" />
+                            <p className="flex-1">Переглянути</p>
+                        </Button>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                        <Button
+                            className="w-full flex"
+                            variant="ghost"
+                            size="icon"
+                            onClick={() =>
+                                downloadFile(name)
+                                    .then(() => {
+                                        toast.success(
+                                            `${name} успішно завантажено`
+                                        );
+                                    })
+                                    .catch(() => {
+                                        toast.error(
+                                            `Помилка завантаження ${name}`
+                                        );
+                                    })
+                            }
+                        >
+                            <Download className="w-4 h-4 mr-2" />
+                            <p className="flex-1">Завантажити</p>
+                        </Button>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                        className="focus:bg-destructive focus:text-destructive-foreground"
+                        asChild
+                    >
+                        <Button
+                            className="w-full flex"
+                            variant="ghost"
+                            onClick={async () => {
+                                try {
+                                    await Api.files.deleteFile(id);
+                                } catch (e) {
+                                    console.log(e);
+                                }
+                            }}
+                        >
+                            <OctagonX className="w-4 h-4 mr-2" />
+                            <p className="flex-1">Видалити файл</p>
+                        </Button>
+                    </DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
+
             <FilePreviewModal
                 open={isCurrentPreview}
                 onClose={() => setPreviewId(null)}

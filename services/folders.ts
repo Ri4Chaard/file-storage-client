@@ -17,3 +17,8 @@ export const createFolder = async (data: {
     return (await axiosInstance.post<Folder>(ApiRoutes.CREATE_FOLDER, data))
         .data;
 };
+
+export const deleteFolder = async (folderId: number): Promise<Object> => {
+    return (await axiosInstance.delete<Object>("/folder/delete/" + folderId))
+        .data;
+};
