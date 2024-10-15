@@ -2,14 +2,13 @@
 
 import React from "react";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { FolderCard } from "./folder-card";
 import { FileCard } from "./file-card";
 import { FolderX } from "lucide-react";
 import { useUserDiskStore } from "@/store/user-disk";
 import { Skeleton } from "../ui/skeleton";
 import { useSession } from "next-auth/react";
+import { findFolderById } from "@/lib/find-folder-by-id";
 
 interface Props {
     userId: number;
@@ -23,21 +22,22 @@ export const UserDisk: React.FC<Props> = ({ userId, folderId, className }) => {
     React.useEffect(() => {
         fetchUserDisk(userId, folderId);
     }, []);
-    const pathname = usePathname();
+
+    const currentFolders = folderId
+        ? (() => {
+              const folder = findFolderById(folders, Number(folderId));
+              return folder ? folder.children : [];
+          })()
+        : folders;
 
     if (useSession().status === "loading" || loading) {
         return (
-            <div className="mt-5">
-                <div
-                    className={cn(
-                        "grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4 sm:gap-5 justify-items-center",
-                        className
-                    )}
-                >
+            <div className={className}>
+                <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4 sm:gap-5 justify-items-center">
                     {[...Array(8)].map((_, index) => (
                         <Skeleton
                             key={index}
-                            className="w-[80px] h-[80px] sm:w-[100px] sm:h-[100px]"
+                            className="w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] bg-primary/10"
                         />
                     ))}
                 </div>
@@ -45,26 +45,23 @@ export const UserDisk: React.FC<Props> = ({ userId, folderId, className }) => {
         );
     }
 
-    if (files.length === 0 && folders.length === 0) {
+    if (files.length === 0 && currentFolders.length === 0) {
         return (
-            <div className="mt-10 text-gray-300">
-                <div className="flex flex-col items-center justify-center gap-5">
+            <div className={cn("bg-secondary", className)}>
+                <div className="text-gray-300 h-1/2 flex flex-col items-center justify-center gap-5 ">
                     <FolderX width={150} height={150} />
+                    <h1 className="text-center font-bold text-xl">
+                        Папка пуста
+                    </h1>
                 </div>
-                <h1 className="text-center font-bold text-xl">Папка пуста</h1>
             </div>
         );
     }
 
     return (
-        <div className="mt-5">
-            <div
-                className={cn(
-                    "grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4 sm:gap-5 justify-items-center",
-                    className
-                )}
-            >
-                {folders.map((folder) => (
+        <div className={className}>
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4 sm:gap-5 justify-items-center">
+                {currentFolders.map((folder) => (
                     <FolderCard
                         key={folder.id}
                         id={folder.id}

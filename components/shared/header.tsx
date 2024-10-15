@@ -1,25 +1,30 @@
+"use client";
+
 import React from "react";
 import { cn } from "@/lib/utils";
-import { Container } from "./container";
-import { CreateFolderButton } from "./create-folder-button";
-import { AddFileButton } from "./add-file-button";
 import { BackButton } from "./back-button";
 import { Button } from "../ui/button";
-import { signOut } from "next-auth/react";
-import { ProfilePanel } from "./profile-panel";
-import { ControlPanel } from "./control-panel";
+import { findFolderById } from "@/lib/find-folder-by-id";
+import { useUserDiskStore } from "@/store/user-disk";
 
 interface Props {
+    folderId?: number;
     className?: string;
 }
 
-export const Header: React.FC<Props> = ({ className }) => {
+export const Header: React.FC<Props> = ({ folderId, className }) => {
+    const { folders } = useUserDiskStore();
+
+    const currentFolder = findFolderById(folders, Number(folderId));
+
     return (
-        <header className={cn("py-5 mb-5 bg-primary", className)}>
-            <Container className="flex items-center justify-between ">
-                <ControlPanel />
-                <ProfilePanel className="self-end" />
-            </Container>
-        </header>
+        <div
+            className={cn("bg-primary p-3 flex items-center gap-3", className)}
+        >
+            {folderId && <BackButton />}
+            <h2 className="font-bold flex items-center text-xl text-secondary h-[40px]">
+                {currentFolder ? currentFolder.name : "Головна"}
+            </h2>
+        </div>
     );
 };

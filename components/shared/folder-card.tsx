@@ -13,6 +13,7 @@ import {
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Api } from "@/services/api-client";
+import { useUserDiskStore } from "@/store/user-disk";
 
 interface Props {
     id: number;
@@ -22,6 +23,8 @@ interface Props {
 
 export const FolderCard: React.FC<Props> = ({ id, name, className }) => {
     const pathname = usePathname();
+
+    const { deleteFolder } = useUserDiskStore();
 
     return (
         <DropdownMenu>
@@ -59,13 +62,7 @@ export const FolderCard: React.FC<Props> = ({ id, name, className }) => {
                     <Button
                         className="w-full flex"
                         variant="ghost"
-                        onClick={async () => {
-                            try {
-                                await Api.folders.deleteFolder(id);
-                            } catch (e) {
-                                console.log(e);
-                            }
-                        }}
+                        onClick={() => deleteFolder(id)}
                     >
                         <OctagonX className="w-4 h-4 mr-2" />
                         <p className="flex-1">Видалити папку</p>

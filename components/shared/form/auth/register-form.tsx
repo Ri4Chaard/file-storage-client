@@ -9,14 +9,14 @@ import { FormInput } from "../form-input";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Api } from "@/services/api-client";
+import { useUserStore } from "@/store/user-store";
 
 interface Props {
-    onUserAdded: () => void;
     onClose?: VoidFunction;
     className?: string;
 }
 
-export const RegisterForm: React.FC<Props> = ({ onUserAdded, onClose }) => {
+export const RegisterForm: React.FC<Props> = ({ onClose }) => {
     const form = useForm<TFormRegisterValues>({
         resolver: zodResolver(formRegisterSchema),
         defaultValues: {
@@ -26,10 +26,12 @@ export const RegisterForm: React.FC<Props> = ({ onUserAdded, onClose }) => {
         },
     });
 
+    const { fetchUsers } = useUserStore();
+
     const onSubmit = async (data: TFormRegisterValues) => {
         try {
             await Api.auth.createUser(data);
-            onUserAdded();
+            fetchUsers();
             onClose?.();
         } catch (e) {
             console.log(e);

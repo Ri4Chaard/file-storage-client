@@ -17,6 +17,7 @@ import {
     DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Api } from "@/services/api-client";
+import { useUserDiskStore } from "@/store/user-disk";
 
 interface Props {
     id: number;
@@ -25,6 +26,8 @@ interface Props {
 }
 
 export const FileCard: React.FC<Props> = ({ id, name, className }) => {
+    const { deleteFile } = useUserDiskStore();
+
     const { previewId, setPreviewId } = usePreviewStore();
     const isCurrentPreview = previewId === name;
     const togglePreview = () => {
@@ -121,13 +124,7 @@ export const FileCard: React.FC<Props> = ({ id, name, className }) => {
                         <Button
                             className="w-full flex"
                             variant="ghost"
-                            onClick={async () => {
-                                try {
-                                    await Api.files.deleteFile(id);
-                                } catch (e) {
-                                    console.log(e);
-                                }
-                            }}
+                            onClick={() => deleteFile(id)}
                         >
                             <OctagonX className="w-4 h-4 mr-2" />
                             <p className="flex-1">Видалити файл</p>

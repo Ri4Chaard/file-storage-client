@@ -7,6 +7,8 @@ export interface Folder {
     updatedAt: Date;
     name: string;
     userId: number;
+    parentId: number | undefined;
+    children: Folder[];
 }
 
 export const createFolder = async (data: {

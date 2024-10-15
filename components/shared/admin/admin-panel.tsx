@@ -2,13 +2,14 @@
 
 import React from "react";
 import { cn } from "@/lib/utils";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import { AddUserModal } from "./add-user-modal";
 import Link from "next/link";
 import { useUsers } from "@/hooks/use-users";
 import { Loader } from "lucide-react";
 import { signOut } from "next-auth/react";
-import { Skeleton } from "../ui/skeleton";
+import { Skeleton } from "../../ui/skeleton";
+import { useUserStore } from "@/store/user-store";
 
 interface Props {
     className?: string;
@@ -17,7 +18,10 @@ interface Props {
 export const AdminPanel: React.FC<Props> = ({ className }) => {
     const [openAddUserModal, setOpenAddUserModal] = React.useState(false);
 
-    const { users, loading, handleUserAdded } = useUsers();
+    const { users, loading, fetchUsers } = useUserStore();
+    React.useEffect(() => {
+        fetchUsers();
+    }, []);
 
     return (
         <div className={cn("flex flex-col gap-5 w-full", className)}>
@@ -38,7 +42,6 @@ export const AdminPanel: React.FC<Props> = ({ className }) => {
             </div>
 
             <AddUserModal
-                onUserAdded={handleUserAdded}
                 open={openAddUserModal}
                 onClose={() => setOpenAddUserModal(false)}
             />

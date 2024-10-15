@@ -1,5 +1,9 @@
+import { BackButton } from "@/components/shared/back-button";
 import { Container } from "@/components/shared/container";
+import { Header } from "@/components/shared/header";
 import { UserDisk } from "@/components/shared/user-disk";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
@@ -17,11 +21,16 @@ export default async function UserPage({
             : undefined;
 
     return (
-        <Container>
+        // <Container>
+        <>
+            <Header className="shadow-md" folderId={parentId} />
+
             <UserDisk
+                className="h-full rounded-lg p-5 mr-2 bg-secondary"
                 userId={Number(params.id[0])}
                 folderId={Number(parentId)}
             />
-        </Container>
+        </>
+        // </Container>
     );
 }

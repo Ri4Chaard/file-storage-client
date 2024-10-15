@@ -4,8 +4,12 @@ import { IFile } from "./files";
 import { Folder } from "./folders";
 import axiosInstance from "./instance";
 
-export const getAll = async (): Promise<User[]> => {
-    return (await axiosInstance.get<User[]>(ApiRoutes.USERS)).data;
+export const getAll = async (id?: number): Promise<User[]> => {
+    return (
+        await axiosInstance.get<User[]>(ApiRoutes.USERS, {
+            params: { id },
+        })
+    ).data;
 };
 
 export const getUserDisk = async (
@@ -16,7 +20,7 @@ export const getUserDisk = async (
         await axiosInstance.get<{ folders: Folder[]; files: IFile[] }>(
             ApiRoutes.USER_DISK,
             {
-                params: { userId, parentId },
+                params: { userId, parentId: parentId ? parentId : null },
             }
         )
     ).data;

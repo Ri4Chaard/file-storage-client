@@ -9,10 +9,9 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-} from "../ui/dialog";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import { Api } from "@/services/api-client";
+} from "../../ui/dialog";
+import { Input } from "../../ui/input";
+import { Button } from "../../ui/button";
 import { useUserDiskStore } from "@/store/user-disk";
 
 interface Props {
@@ -53,9 +52,11 @@ export const CreateFolderModal: React.FC<Props> = ({
 
                 <DialogFooter>
                     <Button
+                        disabled={input.length === 0}
                         onClick={() => {
                             handleClose();
                             createFolder(input, userId, parentId);
+                            setInput("");
                         }}
                     >
                         Створити

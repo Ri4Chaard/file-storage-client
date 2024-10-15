@@ -8,6 +8,8 @@ import { useUploadStore } from "./upload-store";
 export interface UserDiskState {
     folders: Folder[];
     files: IFile[];
+    userId: number | undefined;
+    parentId: number | undefined;
     error: boolean;
     loading: boolean;
 
@@ -20,11 +22,17 @@ export interface UserDiskState {
     ) => Promise<void>;
 
     addFile: (formData: FormData, uploadId: string) => Promise<void>;
+
+    deleteFile: (fileId: number) => Promise<void>;
+
+    deleteFolder: (folderId: number) => Promise<void>;
 }
 
 export const useUserDiskStore = create<UserDiskState>((set, get) => ({
     folders: [],
     files: [],
+    userId: undefined,
+    parentId: undefined,
     error: false,
     loading: true,
 
@@ -36,7 +44,7 @@ export const useUserDiskStore = create<UserDiskState>((set, get) => ({
                 userId,
                 parentId
             );
-            set({ folders, files });
+            set({ folders, files, userId, parentId });
         } catch (e) {
             console.log(e);
             set({ error: true });
@@ -79,15 +87,51 @@ export const useUserDiskStore = create<UserDiskState>((set, get) => ({
                 },
             });
 
-            const userId = Number(formData.get("userId"));
-            const parentId = formData.get("folderId");
             const { folders, files } = await Api.users.getUserDisk(
-                userId,
-                parentId ? Number(parentId) : undefined
+                useUserDiskStore.getState().userId!,
+                useUserDiskStore.getState().parentId
+            );
+
+            set({ folders, files });
+        } catch (e) {
+            console.log(e);
+            set({ error: true });
+        } finally {
+            set({ loading: false });
+        }
+    },
+
+    deleteFile: async (fileId) => {
+        try {
+            set({ loading: true, error: false });
+            await Api.files.deleteFile(fileId);
+
+            const { folders, files } = await Api.users.getUserDisk(
+                useUserDiskStore.getState().userId!,
+                useUserDiskStore.getState().parentId
             );
             set({ folders, files });
         } catch (e) {
             console.log(e);
+            set({ error: true });
+        } finally {
+            set({ loading: false });
+        }
+    },
+
+    deleteFolder: async (folderId) => {
+        try {
+            set({ loading: true, error: false });
+            await Api.folders.deleteFolder(folderId);
+
+            const { folders, files } = await Api.users.getUserDisk(
+                useUserDiskStore.getState().userId!,
+                useUserDiskStore.getState().parentId
+            );
+            set({ folders, files });
+        } catch (e) {
+            console.log(e);
+
             set({ error: true });
         } finally {
             set({ loading: false });

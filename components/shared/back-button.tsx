@@ -13,11 +13,7 @@ interface Props {
 export const BackButton: React.FC<Props> = ({ className }) => {
     const router = useRouter();
     return (
-        <Button
-            variant="outline"
-            className={cn("", className)}
-            onClick={() => router.back()}
-        >
+        <Button className={cn("", className)} onClick={() => router.back()}>
             <ArrowLeft />
         </Button>
     );

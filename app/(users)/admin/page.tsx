@@ -1,6 +1,6 @@
 "use client";
 
-import { AdminPanel } from "@/components/shared/admin-panel";
+import { AdminPanel } from "@/components/shared/admin/admin-panel";
 import { Container } from "@/components/shared/container";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
