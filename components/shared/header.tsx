@@ -6,6 +6,8 @@ import { BackButton } from "./back-button";
 import { Button } from "../ui/button";
 import { findFolderById } from "@/lib/find-folder-by-id";
 import { useUserDiskStore } from "@/store/user-disk";
+import { LayoutGrid, List } from "lucide-react";
+import { DiskViewControl } from "./disk-view-control";
 
 interface Props {
     folderId?: number;
@@ -19,12 +21,19 @@ export const Header: React.FC<Props> = ({ folderId, className }) => {
 
     return (
         <div
-            className={cn("bg-primary p-3 flex items-center gap-3", className)}
+            className={cn(
+                "bg-primary p-3 flex items-center justify-between",
+                className
+            )}
         >
-            {folderId && <BackButton />}
-            <h2 className="font-bold flex items-center text-xl text-secondary h-[40px]">
-                {currentFolder ? currentFolder.name : "Головна"}
-            </h2>
+            <div className="flex items-center gap-3">
+                {folderId && <BackButton />}
+                <h2 className="font-bold flex items-center text-xl text-secondary h-[40px]">
+                    {currentFolder ? currentFolder.name : "Головна"}
+                </h2>
+            </div>
+
+            <DiskViewControl />
         </div>
     );
 };

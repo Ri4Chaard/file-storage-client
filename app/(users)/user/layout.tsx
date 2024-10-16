@@ -14,14 +14,14 @@ export default async function UsersLayout({
     children: React.ReactNode;
 }) {
     const user = await getServerSession(authOptions);
-    console.log(user);
     return (
-        <div className="min-h-screen h-screen overflow-hidden">
+        <div className="h-screen overflow-hidden flex flex-col">
             {user?.user.role === "ADMIN" && <AdminHeader />}
-            {/* <AdminHeader /> */}
-            <div className="flex h-full">
-                <SideBar className="basis-1/5 h-full" />
-                <main className="flex-1 h-full bg-primary">{children}</main>
+            <div className="flex flex-1 overflow-hidden">
+                <SideBar className="basis-1/5 overflow-y-auto" />
+                <main className="flex-1 overflow-y-auto flex flex-col bg-primary p-4">
+                    {children}
+                </main>
             </div>
         </div>
     );

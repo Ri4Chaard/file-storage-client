@@ -23,13 +23,15 @@ export default async function UserPage({
     return (
         // <Container>
         <>
-            <Header className="shadow-md" folderId={parentId} />
+            <Header folderId={parentId} />
 
-            <UserDisk
-                className="h-full rounded-lg p-5 mr-2 bg-secondary"
-                userId={Number(params.id[0])}
-                folderId={Number(parentId)}
-            />
+            <div className="flex overflow-hidden flex-1">
+                <UserDisk
+                    className="flex-1 rounded-lg p-5 mr-2 bg-secondary"
+                    userId={Number(params.id[0])}
+                    folderId={Number(parentId)}
+                />
+            </div>
         </>
         // </Container>
     );

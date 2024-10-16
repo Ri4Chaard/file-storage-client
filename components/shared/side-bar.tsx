@@ -51,7 +51,32 @@ export const SideBar: React.FC<Props> = ({ className }) => {
     const { data: session } = useSession();
 
     return (
-        <nav className={cn("bg-primary p-4", className)}>
+        <nav
+            className={cn(
+                "bg-primary p-4 flex flex-col justify-between border-r border-secondary/30",
+                className
+            )}
+        >
+            <div>
+                {useSession().status === "loading" ? (
+                    <Skeleton className="w-full h-[40px]" />
+                ) : (
+                    <Link href={`/user/${userId}`}>
+                        <Button className="w-full border border-secondary">
+                            {session?.user.email} | На головну
+                        </Button>
+                    </Link>
+                )}
+                <div className="mt-4 text-white">
+                    {folders.map((folder: Folder) => (
+                        <FolderTree
+                            key={folder.id}
+                            folder={folder}
+                            parentPath={`/user/${userId}`}
+                        />
+                    ))}
+                </div>
+            </div>
             <Button
                 className="w-full mb-3"
                 variant="outline"
@@ -59,24 +84,6 @@ export const SideBar: React.FC<Props> = ({ className }) => {
             >
                 Вихід
             </Button>
-            {useSession().status === "loading" ? (
-                <Skeleton className="w-full h-[40px]" />
-            ) : (
-                <Link href={`/user/${userId}`}>
-                    <Button className="w-full border border-secondary">
-                        {session?.user.email} | На головну
-                    </Button>
-                </Link>
-            )}
-            <div className="mt-4 text-white">
-                {folders.map((folder: Folder) => (
-                    <FolderTree
-                        key={folder.id}
-                        folder={folder}
-                        parentPath={`/user/${userId}`}
-                    />
-                ))}
-            </div>
         </nav>
     );
 };
