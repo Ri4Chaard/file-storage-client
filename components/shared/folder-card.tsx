@@ -15,14 +15,21 @@ import Link from "next/link";
 import { Api } from "@/services/api-client";
 import { useUserDiskStore } from "@/store/user-disk";
 import { useSession } from "next-auth/react";
+import { format } from "date-fns";
 
 interface Props {
     id: number;
     name: string;
+    createdAt: Date;
     className?: string;
 }
 
-export const FolderCard: React.FC<Props> = ({ id, name, className }) => {
+export const FolderCard: React.FC<Props> = ({
+    id,
+    name,
+    createdAt,
+    className,
+}) => {
     const pathname = usePathname();
 
     const { deleteFolder } = useUserDiskStore();
@@ -45,6 +52,10 @@ export const FolderCard: React.FC<Props> = ({ id, name, className }) => {
             <DropdownMenuContent>
                 <DropdownMenuLabel className="text-center">
                     {name}
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuLabel className="text-center font-normal">
+                    {format(createdAt, "yyyy-MM-dd HH:mm")}
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>

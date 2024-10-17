@@ -16,17 +16,26 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { Api } from "@/services/api-client";
 import { useUserDiskStore } from "@/store/user-disk";
 import { useSession } from "next-auth/react";
+import { filesize } from "filesize";
+import { format } from "date-fns";
 
 interface Props {
     id: number;
     name: string;
+    size: number;
+    createdAt: Date;
     className?: string;
 }
 
-export const FileCard: React.FC<Props> = ({ id, name, className }) => {
+export const FileCard: React.FC<Props> = ({
+    id,
+    name,
+    size,
+    createdAt,
+    className,
+}) => {
     const { deleteFile } = useUserDiskStore();
 
     const { previewId, setPreviewId } = usePreviewStore();
@@ -79,6 +88,13 @@ export const FileCard: React.FC<Props> = ({ id, name, className }) => {
                 <DropdownMenuContent>
                     <DropdownMenuLabel className="text-center">
                         {name}
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuLabel className="text-center font-normal">
+                        {filesize(size)}
+                    </DropdownMenuLabel>
+                    <DropdownMenuLabel className="text-center font-normal">
+                        {format(createdAt, "yyyy-MM-dd HH:mm")}
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>

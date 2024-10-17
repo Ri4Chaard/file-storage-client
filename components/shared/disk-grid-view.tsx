@@ -57,6 +57,7 @@ export const DiskGridView: React.FC<Props> = ({
                         key={folder.id}
                         id={folder.id}
                         name={folder.name}
+                        createdAt={folder.createdAt}
                     />
                 ))}
                 {files.map((file) => (
@@ -64,6 +65,8 @@ export const DiskGridView: React.FC<Props> = ({
                         key={file.id}
                         id={Number(file.id)}
                         name={file.name}
+                        size={file.size}
+                        createdAt={file.createdAt}
                     />
                 ))}
             </div>
