@@ -17,9 +17,9 @@ export default async function UsersLayout({
     return (
         <div className="h-screen overflow-hidden flex flex-col">
             {user?.user.role === "ADMIN" && <AdminHeader />}
-            <div className="flex flex-1 overflow-hidden">
+            <div className="flex flex-1 overflow-hidden bg-secondary/30">
                 <SideBar className="basis-1/5 overflow-y-auto" />
-                <main className="flex-1 overflow-y-auto flex flex-col bg-primary p-4">
+                <main className="flex-1 overflow-y-auto flex flex-col">
                     {children}
                 </main>
             </div>

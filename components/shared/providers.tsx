@@ -5,6 +5,7 @@ import React, { PropsWithChildren } from "react";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "react-hot-toast";
 import { UploadProgress } from "./upload-progress";
+import { ThemeProvider } from "./theme-provider";
 
 export const Providers: React.FC<PropsWithChildren> = ({ children }) => {
     return (
@@ -12,7 +13,16 @@ export const Providers: React.FC<PropsWithChildren> = ({ children }) => {
             <NextTopLoader />
             <Toaster />
             <UploadProgress />
-            <SessionProvider>{children}</SessionProvider>
+            <SessionProvider>
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                    disableTransitionOnChange
+                >
+                    {children}
+                </ThemeProvider>
+            </SessionProvider>
         </>
     );
 };

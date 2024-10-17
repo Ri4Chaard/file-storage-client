@@ -30,7 +30,6 @@ export const AddFileButton: React.FC<Props> = ({ className }) => {
             />
 
             <Button
-                variant="outline"
                 onClick={() => setOpenAddFileModal(true)}
                 className={cn("", className)}
             >

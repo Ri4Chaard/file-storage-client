@@ -31,7 +31,6 @@ export const CreateFolderButton: React.FC<Props> = ({ className }) => {
             />
 
             <Button
-                variant="outline"
                 onClick={() => setOpenCreateFolderModal(true)}
                 className={cn("", className)}
             >

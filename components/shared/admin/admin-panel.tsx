@@ -4,11 +4,7 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "../../ui/button";
 import { AddUserModal } from "./add-user-modal";
-import Link from "next/link";
-import { useUsers } from "@/hooks/use-users";
-import { Loader } from "lucide-react";
 import { signOut } from "next-auth/react";
-import { Skeleton } from "../../ui/skeleton";
 import { useUserStore } from "@/store/user-store";
 import { ShowUsersModal } from "./show-users-modal";
 

@@ -12,7 +12,7 @@ export const AdminHeader: React.FC<Props> = ({ className }) => {
     return (
         <header
             className={cn(
-                "py-5 bg-primary border-b border-secondary/30",
+                "py-5 bg-secondary/50 border-b border-primary/30",
                 className
             )}
         >

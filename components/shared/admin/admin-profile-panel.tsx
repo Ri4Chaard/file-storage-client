@@ -28,7 +28,9 @@ export const AdminProfilePanel: React.FC<Props> = ({ className }) => {
             <span className="mr-3">
                 <div className="flex items-center gap-5">
                     {!loading && users.length > 0 ? (
-                        <h2 className="text-white">{users[0].login}</h2>
+                        <h2 className="text-secondary-foreground">
+                            {users[0].login}
+                        </h2>
                     ) : (
                         <Skeleton className="w-[150px] h-6" />
                     )}

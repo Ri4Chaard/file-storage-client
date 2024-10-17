@@ -9,6 +9,7 @@ import { Folder } from "@/services/folders";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Skeleton } from "../ui/skeleton";
+import { Disc } from "lucide-react";
 
 interface Props {
     className?: string;
@@ -23,9 +24,9 @@ const FolderTree: React.FC<{ folder: Folder; parentPath: string }> = ({
     const currentFiles = files.filter((file) => file.folderId === folder.id);
 
     return (
-        <div className="pl-2 border-l border-secondary/30">
+        <div className="pl-2 border-l border-primary/30">
             <Link href={currentPath}>
-                <div className="py-1 pl-2 hover:bg-secondary/20 rounded cursor-pointer transition-all">
+                <div className="py-1 pl-2 hover:bg-primary/20 rounded cursor-pointer transition-all">
                     {currentFiles.length > 0
                         ? `${folder.name} (${currentFiles.length})`
                         : folder.name}
@@ -54,28 +55,29 @@ export const SideBar: React.FC<Props> = ({ className }) => {
     return (
         <nav
             className={cn(
-                "bg-primary p-4 flex flex-col justify-between border-r border-secondary/30",
+                "text-secondary-foreground p-3 flex flex-col justify-between",
                 className
             )}
         >
-            <div>
-                {useSession().status === "loading" ? (
-                    <Skeleton className="w-full h-[40px]" />
-                ) : (
-                    <Link href={`/user/${userId}`}>
-                        <Button className="w-full border border-secondary">
-                            {session?.user.login} | На головну
-                        </Button>
-                    </Link>
-                )}
-                <div className="mt-4 text-white">
-                    {folders.map((folder: Folder) => (
-                        <FolderTree
-                            key={folder.id}
-                            folder={folder}
-                            parentPath={`/user/${userId}`}
-                        />
-                    ))}
+            <div className="flex flex-col gap-8">
+                <Link
+                    href={`/user/${userId}`}
+                    className="flex items-center gap-3 text-3xl"
+                >
+                    <h1 className="font-bold">iScan Disc</h1>
+                    <Disc width={40} height={40} />
+                </Link>
+                <div>
+                    <h3 className="mb-3 border-b">Ваші папки:</h3>
+                    <div>
+                        {folders.map((folder: Folder) => (
+                            <FolderTree
+                                key={folder.id}
+                                folder={folder}
+                                parentPath={`/user/${userId}`}
+                            />
+                        ))}
+                    </div>
                 </div>
             </div>
             <Button

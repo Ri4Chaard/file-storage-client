@@ -2,7 +2,7 @@
 
 import { Container } from "@/components/shared/container";
 import { LoginForm } from "@/components/shared/form/auth/login-form";
-import { Loader } from "lucide-react";
+import { Disc3 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -13,7 +13,7 @@ export default function Home() {
     if (useSession().status === "loading") {
         return (
             <Container className="flex items-center justify-center min-h-screen">
-                <Loader className="w-5 h-5 animate-spin" />
+                <Disc3 className="w-5 h-5 animate-spin" />
             </Container>
         );
     }

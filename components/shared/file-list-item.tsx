@@ -54,7 +54,7 @@ export const FileListItem: React.FC<Props> = ({
     return (
         <div
             className={cn(
-                "flex items-center justify-between relative rounded-md border border-input overflow-hidden",
+                "flex items-center justify-between relative rounded-lg border border-input overflow-hidden",
                 className
             )}
         >

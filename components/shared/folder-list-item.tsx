@@ -27,7 +27,7 @@ export const FolderListItem: React.FC<Props> = ({
     return (
         <Link
             href={`${pathname}/${String(id)}`}
-            className="flex items-center justify-between rounded-md border border-input overflow-hidden"
+            className="flex items-center justify-between rounded-lg overflow-hidden"
         >
             <Button
                 className={cn(
