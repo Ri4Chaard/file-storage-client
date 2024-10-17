@@ -5,6 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Folder, OctagonX } from "lucide-react";
 import { useUserDiskStore } from "@/store/user-disk";
+import { useSession } from "next-auth/react";
+import { format } from "date-fns";
 
 interface Props {
     id: number;
@@ -37,19 +39,21 @@ export const FolderListItem: React.FC<Props> = ({
                     <Folder />
                     <p>{name}</p>
                 </div>
-                <p className="mr-10">{createdAt.toString()}</p>
+                <p className="mr-10">{format(createdAt, "yyyy-MM-dd HH:mm")}</p>
             </Button>
 
-            <div className="flex items-center z-10">
-                <Button
-                    variant="destructive"
-                    className="border-none rounded-none"
-                    size="icon"
-                    onClick={() => deleteFolder(id)}
-                >
-                    <OctagonX className="w-4 h-4" />
-                </Button>
-            </div>
+            {useSession().data?.user.role === "ADMIN" && (
+                <div className="flex items-center z-10">
+                    <Button
+                        variant="destructive"
+                        className="border-none rounded-none"
+                        size="icon"
+                        onClick={() => deleteFolder(id)}
+                    >
+                        <OctagonX className="w-4 h-4" />
+                    </Button>
+                </div>
+            )}
         </Link>
     );
 };

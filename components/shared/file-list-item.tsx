@@ -9,10 +9,14 @@ import { useUploadStore } from "@/store/upload-store";
 import { downloadFile } from "@/lib/download-file";
 import toast from "react-hot-toast";
 import { FilePreviewModal } from "./file-preview-modal";
+import { useSession } from "next-auth/react";
+import { filesize } from "filesize";
+import { format } from "date-fns";
 
 interface Props {
     id: number;
     name: string;
+    size: number;
     createdAt: Date;
     className?: string;
 }
@@ -20,6 +24,7 @@ interface Props {
 export const FileListItem: React.FC<Props> = ({
     id,
     name,
+    size,
     createdAt,
     className,
 }) => {
@@ -69,7 +74,8 @@ export const FileListItem: React.FC<Props> = ({
                     <File className="z-10" />
                     <p className="z-10">{name}</p>
                 </div>
-                <p className="z-10">{createdAt.toString()}</p>
+                <p className="z-10">{filesize(size)}</p>
+                <p className="z-10">{format(createdAt, "yyyy-MM-dd HH:mm")}</p>
             </Button>
 
             <div className="flex items-center z-10">
@@ -89,14 +95,17 @@ export const FileListItem: React.FC<Props> = ({
                 >
                     <Download className="w-4 h-4" />
                 </Button>
-                <Button
-                    variant="destructive"
-                    className="border-none rounded-none"
-                    size="icon"
-                    onClick={() => deleteFile(id)}
-                >
-                    <OctagonX className="w-4 h-4" />
-                </Button>
+
+                {useSession().data?.user.role === "ADMIN" && (
+                    <Button
+                        variant="destructive"
+                        className="border-none rounded-none"
+                        size="icon"
+                        onClick={() => deleteFile(id)}
+                    >
+                        <OctagonX className="w-4 h-4" />
+                    </Button>
+                )}
             </div>
 
             <FilePreviewModal

@@ -5,13 +5,21 @@ export const passwordSchema = z
     .min(4, { message: "Введіть коректний пароль" });
 
 export const formLoginSchema = z.object({
-    email: z.string().email({ message: "Введіть пошту коректно" }),
+    login: z.string().min(4, { message: "Введіть не менше 4 символів" }),
     password: passwordSchema,
 });
 
 export const formRegisterSchema = formLoginSchema
     .merge(
         z.object({
+            phone: z
+                .string()
+                // .length(10, { message: "Введіть номер телефону коректно" })
+                .optional(),
+            email: z
+                .string()
+                // .({ message: "Введіть пошту коректно" })
+                .optional(),
             confirmPassword: passwordSchema,
         })
     )

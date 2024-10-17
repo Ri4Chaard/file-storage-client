@@ -64,6 +64,7 @@ export const DiskListView: React.FC<Props> = ({
                     <FileListItem
                         id={file.id}
                         name={file.name}
+                        size={file.size}
                         createdAt={file.createdAt}
                     />
                 ))}

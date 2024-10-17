@@ -20,6 +20,8 @@ export const RegisterForm: React.FC<Props> = ({ onClose }) => {
     const form = useForm<TFormRegisterValues>({
         resolver: zodResolver(formRegisterSchema),
         defaultValues: {
+            login: "",
+            phone: "",
             email: "",
             password: "",
             confirmPassword: "",
@@ -44,7 +46,9 @@ export const RegisterForm: React.FC<Props> = ({ onClose }) => {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="flex flex-col gap-5 w-full"
             >
-                <FormInput name="email" label="Email" required />
+                <FormInput name="login" label="Логін" required />
+                <FormInput name="phone" label="Номер телефону" />
+                <FormInput name="email" label="Email" />
 
                 <FormInput
                     name="password"

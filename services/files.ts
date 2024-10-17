@@ -5,11 +5,12 @@ import { AxiosRequestConfig } from "axios";
 export interface IFile {
     id: number;
     name: string;
+    path: string;
+    size: number;
     userId: number;
+    folderId: number | null;
     createdAt: Date;
     updatedAt: Date;
-    folderId: number | null;
-    path: string;
 }
 
 export const uploadFile = async (

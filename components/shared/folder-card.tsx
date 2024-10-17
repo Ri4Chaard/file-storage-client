@@ -14,6 +14,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Api } from "@/services/api-client";
 import { useUserDiskStore } from "@/store/user-disk";
+import { useSession } from "next-auth/react";
 
 interface Props {
     id: number;
@@ -55,19 +56,22 @@ export const FolderCard: React.FC<Props> = ({ id, name, className }) => {
                         <p className="flex-1">Перейти</p>
                     </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem
-                    className="focus:bg-destructive focus:text-destructive-foreground"
-                    asChild
-                >
-                    <Button
-                        className="w-full flex"
-                        variant="ghost"
-                        onClick={() => deleteFolder(id)}
+
+                {useSession().data?.user.role === "ADMIN" && (
+                    <DropdownMenuItem
+                        className="focus:bg-destructive focus:text-destructive-foreground"
+                        asChild
                     >
-                        <OctagonX className="w-4 h-4 mr-2" />
-                        <p className="flex-1">Видалити папку</p>
-                    </Button>
-                </DropdownMenuItem>
+                        <Button
+                            className="w-full flex"
+                            variant="ghost"
+                            onClick={() => deleteFolder(id)}
+                        >
+                            <OctagonX className="w-4 h-4 mr-2" />
+                            <p className="flex-1">Видалити папку</p>
+                        </Button>
+                    </DropdownMenuItem>
+                )}
             </DropdownMenuContent>
         </DropdownMenu>
     );

@@ -9,6 +9,8 @@ declare module "next-auth" {
             id: string;
             role: "ADMIN" | "USER";
             email: string;
+            login: string;
+            phone: string;
         };
         accessToken: string;
     }
@@ -16,6 +18,7 @@ declare module "next-auth" {
     interface User extends DefaultUser {
         id: number;
         role: "ADMIN" | "USER";
+        login: string;
         token: string;
     }
 }
@@ -24,6 +27,7 @@ declare module "next-auth/jwt" {
     interface JWT extends DefaultJWT {
         id: string;
         role: "ADMIN" | "USER";
+        login: string;
         accessToken: string;
     }
 }

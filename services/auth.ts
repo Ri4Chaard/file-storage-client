@@ -4,6 +4,8 @@ import axiosInstance from "./instance";
 
 export interface User {
     id: number;
+    login: string;
+    phone: string;
     email: string;
     password: string;
     role: "ADMIN" | "USER";

@@ -18,6 +18,7 @@ import {
 } from "../ui/dropdown-menu";
 import { Api } from "@/services/api-client";
 import { useUserDiskStore } from "@/store/user-disk";
+import { useSession } from "next-auth/react";
 
 interface Props {
     id: number;
@@ -117,19 +118,22 @@ export const FileCard: React.FC<Props> = ({ id, name, className }) => {
                             <p className="flex-1">Завантажити</p>
                         </Button>
                     </DropdownMenuItem>
-                    <DropdownMenuItem
-                        className="focus:bg-destructive focus:text-destructive-foreground"
-                        asChild
-                    >
-                        <Button
-                            className="w-full flex"
-                            variant="ghost"
-                            onClick={() => deleteFile(id)}
+
+                    {useSession().data?.user.role === "ADMIN" && (
+                        <DropdownMenuItem
+                            className="focus:bg-destructive focus:text-destructive-foreground"
+                            asChild
                         >
-                            <OctagonX className="w-4 h-4 mr-2" />
-                            <p className="flex-1">Видалити файл</p>
-                        </Button>
-                    </DropdownMenuItem>
+                            <Button
+                                className="w-full flex"
+                                variant="ghost"
+                                onClick={() => deleteFile(id)}
+                            >
+                                <OctagonX className="w-4 h-4 mr-2" />
+                                <p className="flex-1">Видалити файл</p>
+                            </Button>
+                        </DropdownMenuItem>
+                    )}
                 </DropdownMenuContent>
             </DropdownMenu>
 

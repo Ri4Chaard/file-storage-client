@@ -49,6 +49,7 @@ const FolderTree: React.FC<{ folder: Folder; parentPath: string }> = ({
 export const SideBar: React.FC<Props> = ({ className }) => {
     const { folders, userId } = useUserDiskStore();
     const { data: session } = useSession();
+    console.log(session);
 
     return (
         <nav
@@ -63,7 +64,7 @@ export const SideBar: React.FC<Props> = ({ className }) => {
                 ) : (
                     <Link href={`/user/${userId}`}>
                         <Button className="w-full border border-secondary">
-                            {session?.user.email} | На головну
+                            {session?.user.login} | На головну
                         </Button>
                     </Link>
                 )}

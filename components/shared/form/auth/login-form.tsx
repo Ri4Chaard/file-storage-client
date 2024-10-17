@@ -16,7 +16,7 @@ export const LoginForm: React.FC<Props> = ({ className }) => {
     const form = useForm<TFormLoginValues>({
         resolver: zodResolver(formLoginSchema),
         defaultValues: {
-            email: "",
+            login: "",
             password: "",
         },
     });
@@ -45,7 +45,7 @@ export const LoginForm: React.FC<Props> = ({ className }) => {
                     onSubmit={form.handleSubmit(onSubmit)}
                     className="flex flex-col gap-5 w-full"
                 >
-                    <FormInput name="email" label="Email" required />
+                    <FormInput name="login" label="Логін" required />
 
                     <FormInput
                         name="password"
