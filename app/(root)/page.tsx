@@ -2,6 +2,8 @@
 
 import { Container } from "@/components/shared/container";
 import { LoginForm } from "@/components/shared/form/auth/login-form";
+import { RegisterForm } from "@/components/shared/form/auth/register-form";
+import { Registration } from "@/components/shared/registration";
 import { Disc3 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
@@ -29,8 +31,9 @@ export default function Home() {
     }
 
     return (
-        <Container className="flex items-center justify-center min-h-screen">
+        <Container className="flex flex-col gap-5 items-center justify-center min-h-screen">
             <LoginForm />
+            <Registration />
         </Container>
     );
 }

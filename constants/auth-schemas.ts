@@ -14,8 +14,7 @@ export const formRegisterSchema = formLoginSchema
         z.object({
             phone: z
                 .string()
-                // .length(10, { message: "Введіть номер телефону коректно" })
-                .optional(),
+                .length(10, { message: "Введіть номер телефону коректно" }),
             email: z
                 .string()
                 // .({ message: "Введіть пошту коректно" })

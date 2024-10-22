@@ -1,17 +1,12 @@
 import React from "react";
-import { cn } from "@/lib/utils";
 import {
     Dialog,
-    DialogClose,
     DialogContent,
     DialogDescription,
-    DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from "../../ui/dialog";
-import { Button } from "../../ui/button";
-import { RegisterForm } from "../form/auth/register-form";
+import { AddUserForm } from "../form/auth/add-user-form";
 
 interface Props {
     open: boolean;
@@ -34,7 +29,7 @@ export const AddUserModal: React.FC<Props> = ({ open, onClose, className }) => {
                     </DialogDescription>
                 </DialogHeader>
 
-                <RegisterForm onClose={handleClose} />
+                <AddUserForm onClose={handleClose} />
             </DialogContent>
         </Dialog>
     );

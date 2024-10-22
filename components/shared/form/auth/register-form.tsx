@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Api } from "@/services/api-client";
 import { useUserStore } from "@/store/user-store";
+import axiosInstance from "@/services/instance";
 
 interface Props {
     onClose?: VoidFunction;
@@ -28,13 +29,9 @@ export const RegisterForm: React.FC<Props> = ({ onClose }) => {
         },
     });
 
-    const { fetchUsers } = useUserStore();
-
     const onSubmit = async (data: TFormRegisterValues) => {
         try {
-            await Api.auth.createUser(data);
-            fetchUsers();
-            onClose?.();
+            await Api.auth.register(data);
         } catch (e) {
             console.log(e);
         }
@@ -47,7 +44,7 @@ export const RegisterForm: React.FC<Props> = ({ onClose }) => {
                 className="flex flex-col gap-5 w-full"
             >
                 <FormInput name="login" label="Логін" required />
-                <FormInput name="phone" label="Номер телефону" />
+                <FormInput name="phone" label="Номер телефону" required />
                 <FormInput name="email" label="Email" />
 
                 <FormInput
@@ -63,7 +60,7 @@ export const RegisterForm: React.FC<Props> = ({ onClose }) => {
                     required
                 />
                 <Button size="lg" loading={form.formState.isSubmitting}>
-                    Додати
+                    Підтвердити
                 </Button>
             </form>
         </FormProvider>
