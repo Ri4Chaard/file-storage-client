@@ -1,12 +1,13 @@
 import React from "react";
 import { cn } from "@/lib/utils";
-import { FormProvider, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import axiosInstance from "@/services/instance";
-import { FormInput } from "../form-input";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { useAuthPageStore } from "@/store/auth-page-store";
+import toast from "react-hot-toast";
+import { Form } from "@/components/ui/form";
+import { FormFieldInputOtp } from "../form-field-input-otp";
 import { Api } from "@/services/api-client";
 
 interface Props {
@@ -14,41 +15,49 @@ interface Props {
 }
 
 export const VerifyCode: React.FC<Props> = ({ className }) => {
-    const form = useForm<{ phone: string; code: string }>({
+    const { phone, onChangeState } = useAuthPageStore();
+    const form = useForm<{ code: string }>({
         resolver: zodResolver(
             z.object({
-                phone: z
-                    .string()
-                    .length(10, { message: "Введіть номер телефону коректно" }),
                 code: z.string().length(4, { message: "Введіть код коректно" }),
             })
         ),
         defaultValues: {
-            phone: "",
             code: "",
         },
     });
 
-    const onSubmit = async (data: { phone: string; code: string }) => {
+    const onSubmit = async (data: { code: string }) => {
         try {
-            await Api.code.verifyCode(data);
+            await Api.code.verifyCode({ phone, ...data }).then((resp) => {
+                if (resp.user) {
+                    onChangeState("register");
+                    toast.success("Код підтверджено!");
+                }
+            });
         } catch (e) {
             console.log(e);
         }
     };
     return (
-        <FormProvider {...form}>
+        <Form {...form}>
             <form
-                className={cn("flex flex-col gap-5", className)}
+                className={cn("flex flex-col items-center gap-5", className)}
                 onSubmit={form.handleSubmit(onSubmit)}
             >
-                <FormInput name="phone" label="Телефон" required />
-                <FormInput name="code" label="Код веріфікації" required />
-                <Button size="lg" loading={form.formState.isSubmitting}>
-                    Підтвердити
-                    <ArrowRight />
-                </Button>
+                <FormFieldInputOtp
+                    name="code"
+                    form={form}
+                    length={4}
+                    label="Верифікаційний код"
+                    description="Будь ласка, введіть одноразовий пароль,
+                                надісланий на ваш телефон."
+                    required
+                    className="flex flex-col items-center gap-3 w-3/4 text-center"
+                />
+
+                <Button type="submit">Підтвердити код</Button>
             </form>
-        </FormProvider>
+        </Form>
     );
 };

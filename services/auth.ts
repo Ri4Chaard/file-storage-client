@@ -24,12 +24,13 @@ export const createUser = async (data: {
     ).data;
 };
 export const register = async (
+    phone: string,
     newUser: TFormRegisterValues
 ): Promise<{ message: string; user: User }> => {
     return (
         await axiosInstance.post<{ message: string; user: User }>(
             ApiRoutes.REGISTER,
-            newUser
+            { phone, ...newUser }
         )
     ).data;
 };

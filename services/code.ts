@@ -3,9 +3,13 @@ import axiosInstance from "./instance";
 
 export const sendCode = async (data: {
     phone: string;
-}): Promise<{ message: string }> => {
+}): Promise<{ registered?: boolean; verified?: boolean; message: string }> => {
     return (
-        await axiosInstance.post<{ message: string }>(ApiRoutes.SEND_CODE, {
+        await axiosInstance.post<{
+            registered?: boolean;
+            verified?: boolean;
+            message: string;
+        }>(ApiRoutes.SEND_CODE, {
             ...data,
         })
     ).data;

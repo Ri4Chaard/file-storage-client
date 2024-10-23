@@ -1,12 +1,13 @@
 import React from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
-import { FormInput } from "../form-input";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useUserStore } from "@/store/user-store";
 import { z } from "zod";
 import { Api } from "@/services/api-client";
+import { FormFieldInput } from "../form-field-input";
+import { Form } from "@/components/ui/form";
 
 interface Props {
     onClose?: VoidFunction;
@@ -40,17 +41,22 @@ export const AddUserForm: React.FC<Props> = ({ onClose }) => {
     };
 
     return (
-        <FormProvider {...form}>
+        <Form {...form}>
             <form
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="flex flex-col gap-5 w-full"
             >
-                <FormInput name="phone" label="Номер телефону" required />
+                <FormFieldInput
+                    form={form}
+                    name="phone"
+                    label="Номер телефону"
+                    required
+                />
 
                 <Button size="lg" loading={form.formState.isSubmitting}>
                     Додати
                 </Button>
             </form>
-        </FormProvider>
+        </Form>
     );
 };

@@ -3,10 +3,11 @@ import { cn } from "@/lib/utils";
 import { FormProvider, useForm } from "react-hook-form";
 import { formLoginSchema, TFormLoginValues } from "@/constants/auth-schemas";
 import { signIn } from "next-auth/react";
-import { FormInput } from "../form-input";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { redirect } from "next/navigation";
+import { Form } from "@/components/ui/form";
+import { FormFieldInput } from "../form-field-input";
 
 interface Props {
     className?: string;
@@ -40,14 +41,19 @@ export const LoginForm: React.FC<Props> = ({ className }) => {
     return (
         <div className={(cn(""), className)}>
             <h1 className="font-bold text-center mb-5">Вхід до застосунка</h1>
-            <FormProvider {...form}>
+            <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
                     className="flex flex-col gap-5 w-full"
                 >
-                    <FormInput name="login" label="Логін" required />
-
-                    <FormInput
+                    <FormFieldInput
+                        form={form}
+                        name="login"
+                        label="Логін"
+                        required
+                    />
+                    <FormFieldInput
+                        form={form}
                         name="password"
                         type="password"
                         label="Пароль"
@@ -58,7 +64,7 @@ export const LoginForm: React.FC<Props> = ({ className }) => {
                         Вхід
                     </Button>
                 </form>
-            </FormProvider>
+            </Form>
         </div>
     );
 };

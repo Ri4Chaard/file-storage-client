@@ -1,19 +1,22 @@
 import React from "react";
 import { cn } from "@/lib/utils";
-import { FormProvider, useForm } from "react-hook-form";
-import axiosInstance from "@/services/instance";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { FormInput } from "../form-input";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Send, Smartphone } from "lucide-react";
 import { Api } from "@/services/api-client";
+import { useAuthPageStore } from "@/store/auth-page-store";
+import toast from "react-hot-toast";
+import { Form } from "@/components/ui/form";
+import { FormFieldInput } from "../form-field-input";
 
 interface Props {
     className?: string;
 }
 
 export const SendCode: React.FC<Props> = ({ className }) => {
+    const { setPhone, onChangeState, onSwitchType } = useAuthPageStore();
     const form = useForm<{ phone: string }>({
         resolver: zodResolver(
             z.object({
@@ -29,24 +32,44 @@ export const SendCode: React.FC<Props> = ({ className }) => {
 
     const onSubmit = async (data: { phone: string }) => {
         try {
-            await Api.code.sendCode(data);
+            setPhone(data.phone);
+            await Api.code.sendCode(data).then((resp) => {
+                if (resp.registered) {
+                    onSwitchType();
+                    toast.error("Ви вже зареєстровані!");
+                } else if (resp.verified) {
+                    onChangeState("register");
+                } else {
+                    onChangeState("verify");
+                    toast.success("Код відправлено!");
+                }
+            });
         } catch (e) {
             console.log(e);
         }
     };
 
     return (
-        <FormProvider {...form}>
+        <Form {...form}>
             <form
                 onSubmit={form.handleSubmit(onSubmit)}
                 className={cn("flex flex-col gap-5", className)}
             >
-                <FormInput name="phone" label="Номер телефону" required />
-                <Button size="lg" loading={form.formState.isSubmitting}>
-                    Зареєструватися
-                    <ArrowRight />
+                <FormFieldInput
+                    form={form}
+                    name="phone"
+                    label="Номер телефону"
+                    required
+                />
+                <Button
+                    className="flex items-center gap-3"
+                    size="lg"
+                    loading={form.formState.isSubmitting}
+                >
+                    Надіслати код
+                    <Send width={15} />
                 </Button>
             </form>
-        </FormProvider>
+        </Form>
     );
 };

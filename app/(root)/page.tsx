@@ -2,8 +2,9 @@
 
 import { Container } from "@/components/shared/container";
 import { LoginForm } from "@/components/shared/form/auth/login-form";
-import { RegisterForm } from "@/components/shared/form/auth/register-form";
 import { Registration } from "@/components/shared/registration";
+import { Button } from "@/components/ui/button";
+import { useAuthPageStore } from "@/store/auth-page-store";
 import { Disc3 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
@@ -11,6 +12,7 @@ import React from "react";
 
 export default function Home() {
     const { data: session } = useSession();
+    const { authType, onSwitchType } = useAuthPageStore();
 
     if (useSession().status === "loading") {
         return (
@@ -31,9 +33,29 @@ export default function Home() {
     }
 
     return (
-        <Container className="flex flex-col gap-5 items-center justify-center min-h-screen">
-            <LoginForm />
-            <Registration />
-        </Container>
+        <div className="flex gap-5 items-center justify-center min-h-screen">
+            <div className="relative flex basis-2/3 min-h-screen bg-film bg-cover">
+                <div className="absolute w-full h-full bg-black/40"></div>
+            </div>
+            <div className="basis-1/3 flex flex-col justify-center items-center px-5">
+                {authType === "login" ? <LoginForm /> : <Registration />}
+                <div className="flex items-center w-full my-5">
+                    <span className="flex-1 border border-primary/10"></span>
+                    <h2 className="text-sm mx-2 font-bold text-primary/50">
+                        {authType === "login"
+                            ? "Ще не зареєструвалися?"
+                            : "Вже зареєструвалися?"}
+                    </h2>
+                    <span className="flex-1 border border-primary/10"></span>
+                </div>
+                <Button
+                    variant="outline"
+                    className="flex"
+                    onClick={onSwitchType}
+                >
+                    {authType === "login" ? "Зареєструватися" : "Увійти"}
+                </Button>
+            </div>
+        </div>
     );
 }
