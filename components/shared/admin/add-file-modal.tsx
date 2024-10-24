@@ -57,9 +57,9 @@ export const AddFileModal: React.FC<Props> = ({
             addUpload(uploadId, `Завантаження файлу: ${file.name}`);
 
             const formData = new FormData();
-            formData.append("files", file);
             formData.append("userId", userId.toString());
             formData.append("folderId", parentId ? parentId.toString() : "");
+            formData.append("files", file);
 
             addFile(formData, uploadId)
                 .then(() => {

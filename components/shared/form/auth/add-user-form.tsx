@@ -6,8 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useUserStore } from "@/store/user-store";
 import { z } from "zod";
 import { Api } from "@/services/api-client";
-import { FormFieldInput } from "../form-field-input";
 import { Form } from "@/components/ui/form";
+import { FormFieldPhoneInput } from "../form-field-phone-input";
 
 interface Props {
     onClose?: VoidFunction;
@@ -46,7 +46,7 @@ export const AddUserForm: React.FC<Props> = ({ onClose }) => {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="flex flex-col gap-5 w-full"
             >
-                <FormFieldInput
+                <FormFieldPhoneInput
                     form={form}
                     name="phone"
                     label="Номер телефону"
