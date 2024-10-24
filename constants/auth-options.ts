@@ -7,7 +7,7 @@ export const authOptions: AuthOptions = {
         CredentialsProvider({
             name: "Credentials",
             credentials: {
-                login: { label: "Login", type: "text" },
+                phone: { label: "Phone", type: "text" },
                 password: { label: "Password", type: "password" },
             },
             async authorize(credentials) {
@@ -36,7 +36,7 @@ export const authOptions: AuthOptions = {
             if (user) {
                 token.id = String(user.id);
                 token.role = user.role;
-                token.login = user.login;
+                token.phone = user.phone;
                 token.accessToken = user.token;
             }
             return token;
@@ -45,7 +45,7 @@ export const authOptions: AuthOptions = {
         async session({ session, token }) {
             session.user.id = token.id;
             session.user.role = token.role;
-            session.user.login = token.login;
+            session.user.phone = token.phone;
             session.accessToken = token.accessToken;
             return session;
         },

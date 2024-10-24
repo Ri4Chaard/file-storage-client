@@ -5,7 +5,9 @@ export const passwordSchema = z
     .min(4, { message: "Введіть коректний пароль" });
 
 export const formLoginSchema = z.object({
-    login: z.string().min(4, { message: "Введіть не менше 4 символів" }),
+    phone: z
+        .string()
+        .length(10, { message: "Введіть номер телефону коректно" }),
     password: passwordSchema,
 });
 

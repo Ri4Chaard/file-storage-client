@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { redirect } from "next/navigation";
 import { Form } from "@/components/ui/form";
 import { FormFieldInput } from "../form-field-input";
+import { FormFieldPhoneInput } from "../form-field-phone-input";
 
 interface Props {
     className?: string;
@@ -17,7 +18,7 @@ export const LoginForm: React.FC<Props> = ({ className }) => {
     const form = useForm<TFormLoginValues>({
         resolver: zodResolver(formLoginSchema),
         defaultValues: {
-            login: "",
+            phone: "",
             password: "",
         },
     });
@@ -46,10 +47,10 @@ export const LoginForm: React.FC<Props> = ({ className }) => {
                     onSubmit={form.handleSubmit(onSubmit)}
                     className="flex flex-col gap-5 w-full"
                 >
-                    <FormFieldInput
+                    <FormFieldPhoneInput
                         form={form}
-                        name="login"
-                        label="Логін"
+                        name="phone"
+                        label="Номер телефону"
                         required
                     />
                     <FormFieldInput

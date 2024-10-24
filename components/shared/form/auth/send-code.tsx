@@ -4,12 +4,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Send, Smartphone } from "lucide-react";
+import { Send } from "lucide-react";
 import { Api } from "@/services/api-client";
 import { useAuthPageStore } from "@/store/auth-page-store";
 import toast from "react-hot-toast";
 import { Form } from "@/components/ui/form";
-import { FormFieldInput } from "../form-field-input";
+import { FormFieldPhoneInput } from "../form-field-phone-input";
 
 interface Props {
     className?: string;
@@ -55,7 +55,7 @@ export const SendCode: React.FC<Props> = ({ className }) => {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className={cn("flex flex-col gap-5", className)}
             >
-                <FormFieldInput
+                <FormFieldPhoneInput
                     form={form}
                     name="phone"
                     label="Номер телефону"

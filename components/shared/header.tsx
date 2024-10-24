@@ -32,7 +32,7 @@ export const Header: React.FC<Props> = ({ folderId, className }) => {
                     {useSession().status === "loading" ? (
                         <Skeleton className="w-[200px] h-[32px] bg-primary/10" />
                     ) : (
-                        <span>{session?.user.login}</span>
+                        <span>{session?.user.phone}</span>
                     )}
                 </h2>
             </div>

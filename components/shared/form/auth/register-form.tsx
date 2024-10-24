@@ -22,7 +22,7 @@ export const RegisterForm: React.FC<Props> = ({ onClose }) => {
     const form = useForm<TFormRegisterValues>({
         resolver: zodResolver(formRegisterSchema),
         defaultValues: {
-            login: "",
+            phone: phone,
             password: "",
             confirmPassword: "",
         },
@@ -30,7 +30,7 @@ export const RegisterForm: React.FC<Props> = ({ onClose }) => {
 
     const onSubmit = async (data: TFormRegisterValues) => {
         try {
-            await Api.auth.register(phone, data).then((resp) => {
+            await Api.auth.register(data).then((resp) => {
                 if (resp.user) {
                     onChangeState("send");
                     onSwitchType();
@@ -48,13 +48,6 @@ export const RegisterForm: React.FC<Props> = ({ onClose }) => {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="flex flex-col gap-5 w-full"
             >
-                <FormFieldInput
-                    form={form}
-                    name="login"
-                    label="Логін"
-                    required
-                />
-
                 <FormFieldInput
                     form={form}
                     name="password"

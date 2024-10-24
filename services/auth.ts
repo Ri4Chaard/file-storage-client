@@ -5,7 +5,6 @@ import axiosInstance from "./instance";
 export interface User {
     id: number;
     phone: string;
-    login: string | null;
     password: string | null;
     role: "ADMIN" | "USER";
     verified: boolean;
@@ -24,13 +23,12 @@ export const createUser = async (data: {
     ).data;
 };
 export const register = async (
-    phone: string,
     newUser: TFormRegisterValues
 ): Promise<{ message: string; user: User }> => {
     return (
         await axiosInstance.post<{ message: string; user: User }>(
             ApiRoutes.REGISTER,
-            { phone, ...newUser }
+            newUser
         )
     ).data;
 };
