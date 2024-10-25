@@ -40,5 +40,19 @@ export const previewFile = async (
 };
 
 export const deleteFile = async (fileId: number): Promise<Object> => {
-    return (await axiosInstance.delete<Object>("/files/delete/" + fileId)).data;
+    return (await axiosInstance.delete<Object>(ApiRoutes.DELETE_FILE + fileId))
+        .data;
+};
+
+export const downloadSelected = async (
+    selectedFiles: number[],
+    config?: AxiosRequestConfig
+): Promise<Blob> => {
+    return (
+        await axiosInstance.post(
+            ApiRoutes.DOWNLOAD_SELECTED_FILES,
+            { selectedFiles },
+            config
+        )
+    ).data;
 };

@@ -1,6 +1,7 @@
 "use client";
 
 import { useUploadStore } from "@/store/upload-store";
+import { Loader } from "lucide-react";
 
 export const UploadProgress = () => {
     const { uploads } = useUploadStore();
@@ -16,12 +17,18 @@ export const UploadProgress = () => {
                             <div className="text-sm truncate">
                                 {upload.message}
                             </div>
-                            <div className="w-full bg-gray-200 rounded-full h-2.5 mt-1">
-                                <div
-                                    className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
-                                    style={{ width: `${upload.progress}%` }}
-                                />
-                            </div>
+                            {upload.message.includes("Завантаження архіву") ? (
+                                <div className="w-full flex items-center justify-center">
+                                    <Loader className="animate-spin" />
+                                </div>
+                            ) : (
+                                <div className="w-full bg-gray-200 rounded-full h-2.5 mt-1">
+                                    <div
+                                        className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
+                                        style={{ width: `${upload.progress}%` }}
+                                    />
+                                </div>
+                            )}
                         </div>
                     ))}
             </div>

@@ -12,6 +12,7 @@ export interface UserDiskState {
     parentId: number | undefined;
     error: boolean;
     loading: boolean;
+    selectedFiles: number[];
 
     fetchUserDisk: (userId: number, parentId?: number) => Promise<void>;
 
@@ -26,6 +27,10 @@ export interface UserDiskState {
     deleteFile: (fileId: number) => Promise<void>;
 
     deleteFolder: (folderId: number) => Promise<void>;
+
+    selectFile: (fileId: number) => void; // Добавим функцию для выбора файла
+
+    unselectFile: (fileId: number) => void; // Для снятия выбора с файла
 }
 
 export const useUserDiskStore = create<UserDiskState>((set, get) => ({
@@ -35,6 +40,7 @@ export const useUserDiskStore = create<UserDiskState>((set, get) => ({
     parentId: undefined,
     error: false,
     loading: true,
+    selectedFiles: [],
 
     // Функция для загрузки содержимого диска пользователя
     fetchUserDisk: async (userId, parentId) => {
@@ -136,5 +142,21 @@ export const useUserDiskStore = create<UserDiskState>((set, get) => ({
         } finally {
             set({ loading: false });
         }
+    },
+
+    // Функция для выбора файла
+    selectFile: (fileId) => {
+        const { selectedFiles } = get();
+        set({ selectedFiles: [...selectedFiles, fileId] });
+    },
+
+    // Функция для снятия выбора с файла
+    unselectFile: (fileId) => {
+        const { selectedFiles } = get();
+        set({
+            selectedFiles: selectedFiles.filter(
+                (selectedFileId) => selectedFileId !== fileId
+            ),
+        });
     },
 }));

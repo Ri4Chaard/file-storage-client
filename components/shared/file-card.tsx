@@ -36,7 +36,8 @@ export const FileCard: React.FC<Props> = ({
     createdAt,
     className,
 }) => {
-    const { deleteFile } = useUserDiskStore();
+    const { deleteFile, selectFile, unselectFile, selectedFiles } =
+        useUserDiskStore();
 
     const { previewId, setPreviewId } = usePreviewStore();
     const isCurrentPreview = previewId === name;
@@ -60,13 +61,31 @@ export const FileCard: React.FC<Props> = ({
               )[0].progress
             : 0;
 
+    const isSelected = selectedFiles.some(
+        (selectedFileId) => selectedFileId === id
+    );
+
+    const handleSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.checked) {
+            selectFile(id);
+        } else {
+            unselectFile(id);
+        }
+    };
+
     return (
         <div
             className={cn(
-                "w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] flex flex-col items-center",
+                "relative w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] flex flex-col items-center",
                 className
             )}
         >
+            <input
+                className="absolute right-1 top-1 w-5 h-5 z-20 rounded-full"
+                type="checkbox"
+                checked={isSelected}
+                onChange={handleSelect}
+            />
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button
@@ -75,7 +94,7 @@ export const FileCard: React.FC<Props> = ({
                     >
                         <File className="z-10" />
                         <p className="w-full z-10 text-xs sm:text-sm overflow-hidden text-center whitespace-pre-wrap break-words">
-                            {name}
+                            {name.substring(14)}
                         </p>
                         <div
                             className={
@@ -87,7 +106,7 @@ export const FileCard: React.FC<Props> = ({
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                     <DropdownMenuLabel className="text-center">
-                        {name}
+                        {name.substring(14)}
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuLabel className="text-center font-normal">

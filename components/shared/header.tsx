@@ -10,6 +10,7 @@ import { LayoutGrid, List } from "lucide-react";
 import { DiskViewControl } from "./disk-view-control";
 import { useSession } from "next-auth/react";
 import { Skeleton } from "../ui/skeleton";
+import { DownloadSelectedButton } from "./download-selected-button";
 
 interface Props {
     folderId?: number;
@@ -36,6 +37,7 @@ export const Header: React.FC<Props> = ({ folderId, className }) => {
                     )}
                 </h2>
             </div>
+            <DownloadSelectedButton />
 
             <DiskViewControl />
         </div>

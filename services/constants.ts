@@ -9,4 +9,6 @@ export enum ApiRoutes {
     USER_DISK = "/user-disk/get",
     SEND_CODE = "/auth/send-code",
     VERIFY_CODE = "/auth/verify-user",
+    DELETE_FILE = "/files/delete/",
+    DOWNLOAD_SELECTED_FILES = "/files/download-selected",
 }

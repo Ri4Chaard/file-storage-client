@@ -25,28 +25,30 @@ export const FolderListItem: React.FC<Props> = ({
     const { deleteFolder } = useUserDiskStore();
 
     return (
-        <Link
-            href={`${pathname}/${String(id)}`}
-            className="flex items-center justify-between rounded-lg overflow-hidden"
-        >
-            <Button
-                className={cn(
-                    "flex-1 flex items-center justify-between border-none rounded-none",
-                    className
-                )}
+        <div className="w-full flex gap-2">
+            <Link
+                href={`${pathname}/${String(id)}`}
+                className="flex items-center justify-between rounded-lg overflow-hidden flex-1"
             >
-                <div className="flex items-center gap-5">
-                    <Folder />
-                    <p>{name}</p>
-                </div>
-                <p className="mr-10">{format(createdAt, "yyyy-MM-dd HH:mm")}</p>
-            </Button>
-
+                <Button
+                    className={cn(
+                        "flex-1 flex items-center justify-between border-none rounded-none",
+                        className
+                    )}
+                >
+                    <div className="flex items-center gap-5">
+                        <Folder />
+                        <p>{name}</p>
+                    </div>
+                    <p className="mr-10">
+                        {format(createdAt, "yyyy-MM-dd HH:mm")}
+                    </p>
+                </Button>
+            </Link>
             {useSession().data?.user.role === "ADMIN" && (
                 <div className="flex items-center z-10">
                     <Button
                         variant="destructive"
-                        className="border-none rounded-none"
                         size="icon"
                         onClick={() => deleteFolder(id)}
                     >
@@ -54,6 +56,6 @@ export const FolderListItem: React.FC<Props> = ({
                     </Button>
                 </div>
             )}
-        </Link>
+        </div>
     );
 };

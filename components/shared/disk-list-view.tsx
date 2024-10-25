@@ -55,6 +55,7 @@ export const DiskListView: React.FC<Props> = ({
             <div className="flex flex-col gap-5">
                 {currentFolders.map((folder) => (
                     <FolderListItem
+                        key={folder.id}
                         id={folder.id}
                         name={folder.name}
                         createdAt={folder.createdAt}
@@ -62,6 +63,7 @@ export const DiskListView: React.FC<Props> = ({
                 ))}
                 {files.map((file) => (
                     <FileListItem
+                        key={file.id}
                         id={file.id}
                         name={file.name}
                         size={file.size}
