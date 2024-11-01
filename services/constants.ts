@@ -11,4 +11,5 @@ export enum ApiRoutes {
     VERIFY_CODE = "/auth/verify-user",
     DELETE_FILE = "/files/delete/",
     DOWNLOAD_SELECTED_FILES = "/files/download-selected",
+    ADD_COMMENT = "/users/add-comment",
 }

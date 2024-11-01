@@ -25,3 +25,12 @@ export const getUserDisk = async (
         )
     ).data;
 };
+
+export const addComment = async (data: {
+    userId: number;
+    comment: string | null;
+}): Promise<{ user: User }> => {
+    return (
+        await axiosInstance.patch<{ user: User }>(ApiRoutes.ADD_COMMENT, data)
+    ).data;
+};

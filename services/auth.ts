@@ -1,10 +1,16 @@
 import { TFormRegisterValues } from "../constants/auth-schemas";
 import { ApiRoutes } from "./constants";
+import { IFile } from "./files";
+import { Folder } from "./folders";
 import axiosInstance from "./instance";
 
 export interface User {
     id: number;
     phone: string;
+    orderId: string;
+    comment: string;
+    files?: IFile[];
+    folders?: Folder[];
     password: string | null;
     role: "ADMIN" | "USER";
     verified: boolean;
@@ -14,6 +20,7 @@ export interface User {
 
 export const createUser = async (data: {
     phone: string;
+    orderId: string;
 }): Promise<{ message: string; user: User }> => {
     return (
         await axiosInstance.post<{ message: string; user: User }>(
