@@ -9,9 +9,9 @@ export const usePreviewFile = (fileName: string) => {
     const previewFile = async () => {
         const uploadId = fileName;
         addUpload(uploadId, "preview");
+
         try {
-            const data = await Api.files.previewFile(fileName, {
-                responseType: "blob",
+            const arrayBuffer = await Api.files.getFile(fileName, {
                 withCredentials: true,
                 onDownloadProgress: (progressEvent) => {
                     const progress = Math.round(
@@ -20,13 +20,23 @@ export const usePreviewFile = (fileName: string) => {
                     updateUpload(uploadId, progress);
                 },
             });
-            setPreviewUrl(window.URL.createObjectURL(new Blob([data])));
+
+            const blob = new Blob([arrayBuffer], {
+                type: "application/octet-stream",
+            });
+
+            const streamUrl = window.URL.createObjectURL(blob);
+            setPreviewUrl(streamUrl);
 
             removeUpload(uploadId);
+            return () => {
+                window.URL.revokeObjectURL(streamUrl);
+            };
         } catch (error) {
-            console.error("Ошибка при загрузке файла:", error);
+            console.error("Error while loading file:", error);
             removeUpload(uploadId);
         }
     };
+
     return { previewUrl, previewFile };
 };

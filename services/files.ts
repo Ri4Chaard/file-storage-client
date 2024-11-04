@@ -22,20 +22,12 @@ export const uploadFile = async (
     ).data;
 };
 
-export const downloadFile = async (
+export const getFile = async (
     fileName: string,
     config?: AxiosRequestConfig
 ): Promise<Blob> => {
     return (
         await axiosInstance.get<Blob>(ApiRoutes.GET_FILE + fileName, config)
-    ).data;
-};
-export const previewFile = async (
-    fileName: string,
-    config?: AxiosRequestConfig
-): Promise<Blob> => {
-    return (
-        await axiosInstance.get<Blob>(ApiRoutes.PREVIEW_FILE + fileName, config)
     ).data;
 };
 

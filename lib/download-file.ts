@@ -7,8 +7,7 @@ export const downloadFile = async (fileName: string) => {
         .getState()
         .addUpload(uploadId, `Завантаження файлу: ${fileName}`);
     try {
-        const data = await Api.files.downloadFile(fileName, {
-            responseType: "blob",
+        const arrayBuffer = await Api.files.getFile(fileName, {
             withCredentials: true,
             onDownloadProgress: (progressEvent) => {
                 const progress = Math.round(
@@ -18,15 +17,23 @@ export const downloadFile = async (fileName: string) => {
             },
         });
 
-        const url = window.URL.createObjectURL(new Blob([data]));
+        const blob = new Blob([arrayBuffer], {
+            type: "application/octet-stream",
+        });
+
+        const streamUrl = window.URL.createObjectURL(blob);
+
         const link = document.createElement("a");
-        link.href = url;
+        link.href = streamUrl;
         link.setAttribute("download", fileName.substring(14));
         document.body.appendChild(link);
         link.click();
         link.parentNode!.removeChild(link);
 
         useUploadStore.getState().removeUpload(uploadId);
+        return () => {
+            window.URL.revokeObjectURL(streamUrl);
+        };
     } catch (error) {
         console.error("Ошибка при скачивании файла:", error);
         useUploadStore.getState().removeUpload(uploadId);

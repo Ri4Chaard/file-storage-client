@@ -1,5 +1,4 @@
 import { Api } from "@/services/api-client";
-import axiosInstance from "@/services/instance";
 import { useUploadStore } from "@/store/upload-store";
 import { useUserDiskStore } from "@/store/user-disk";
 
