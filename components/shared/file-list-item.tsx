@@ -91,14 +91,14 @@ export const FileListItem: React.FC<Props> = ({
                     disabled={previewProgress > 0 && previewProgress < 100}
                     onClick={() => previewFile().then(togglePreview)}
                 >
-                    <div className="flex items-center gap-5 basis-1/3">
+                    <div className="flex items-center gap-5">
                         <File className="z-10" />
                         <p className="z-10">{name.substring(14)}</p>
                     </div>
-                    <p className="z-10 basis-1/3 text-end">{filesize(size)}</p>
-                    <p className="z-10 basis-1/3 text-end">
-                        {format(createdAt, "yyyy-MM-dd HH:mm")}
-                    </p>
+                    <div className="z-10 flex items-center justify-end gap-2">
+                        <p className="font-bold">{filesize(size)}</p>
+                        <p>{format(createdAt, "yyyy-MM-dd HH:mm")}</p>
+                    </div>
                 </Button>
 
                 <div className="flex items-center z-10">

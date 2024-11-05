@@ -8,6 +8,7 @@ export const downloadFile = async (fileName: string) => {
         .addUpload(uploadId, `Завантаження файлу: ${fileName}`);
     try {
         const arrayBuffer = await Api.files.getFile(fileName, {
+            responseType: "arraybuffer",
             withCredentials: true,
             onDownloadProgress: (progressEvent) => {
                 const progress = Math.round(

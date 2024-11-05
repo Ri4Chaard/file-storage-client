@@ -39,3 +39,14 @@ export const register = async (
         )
     ).data;
 };
+
+export const restorePassword = async (data: {
+    phone: string;
+}): Promise<{ message: string }> => {
+    return (
+        await axiosInstance.post<{ message: string }>(
+            ApiRoutes.RESTORE_PASSWORD,
+            data
+        )
+    ).data;
+};

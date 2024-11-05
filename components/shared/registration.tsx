@@ -5,6 +5,7 @@ import { RegisterForm } from "./form/auth/register-form";
 import { VerifyCode } from "./form/auth/verify-code";
 import { SendCode } from "./form/auth/send-code";
 import { useAuthPageStore } from "@/store/auth-page-store";
+import { RestorePassword } from "./form/auth/restore-password";
 
 interface Props {
     className?: string;
@@ -17,6 +18,7 @@ export const Registration: React.FC<Props> = ({ className }) => {
             {registrationState === "send" && <SendCode />}
             {registrationState === "verify" && <VerifyCode />}
             {registrationState === "register" && <RegisterForm />}
+            {registrationState === "password_restore" && <RestorePassword />}
             {/* <VerifyCode /> */}
         </div>
     );

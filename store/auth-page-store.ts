@@ -1,15 +1,18 @@
 import { create } from "zustand";
 
+type TRegistrationState = "send" | "verify" | "register" | "password_restore";
+type TAuthType = "login" | "register";
+
 export interface AuthPage {
-    authType: "login" | "register";
+    authType: TAuthType;
     phone: string;
     expiresAt: Date | null;
-    registrationState: "send" | "verify" | "register";
+    registrationState: TRegistrationState;
 
     setPhone: (phone: string) => void;
     setExpiresAt: (expiresAt: Date) => void;
     onSwitchType: () => void;
-    onChangeState: (registrationState: "send" | "verify" | "register") => void;
+    onChangeState: (registrationState: TRegistrationState) => void;
 }
 
 export const useAuthPageStore = create<AuthPage>((set) => ({

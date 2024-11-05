@@ -12,7 +12,7 @@ import React from "react";
 
 export default function Home() {
     const { data: session } = useSession();
-    const { authType, onSwitchType } = useAuthPageStore();
+    const { authType, onSwitchType, onChangeState } = useAuthPageStore();
 
     if (useSession().status === "loading") {
         return (
@@ -50,11 +50,24 @@ export default function Home() {
                 </div>
                 <Button
                     variant="outline"
-                    className="flex"
+                    className="flex mb-5"
                     onClick={onSwitchType}
                 >
                     {authType === "login" ? "Зареєструватися" : "Увійти"}
                 </Button>
+
+                {authType === "login" && (
+                    <Button
+                        variant="ghost"
+                        className="flex"
+                        onClick={() => {
+                            onSwitchType();
+                            onChangeState("password_restore");
+                        }}
+                    >
+                        Забули пароль?
+                    </Button>
+                )}
             </div>
         </div>
     );

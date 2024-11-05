@@ -12,6 +12,7 @@ export const usePreviewFile = (fileName: string) => {
 
         try {
             const arrayBuffer = await Api.files.getFile(fileName, {
+                responseType: "arraybuffer",
                 withCredentials: true,
                 onDownloadProgress: (progressEvent) => {
                     const progress = Math.round(

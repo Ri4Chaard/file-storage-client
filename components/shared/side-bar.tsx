@@ -7,8 +7,7 @@ import { Button } from "../ui/button";
 import { signOut, useSession } from "next-auth/react";
 import { Folder } from "@/services/folders";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Skeleton } from "../ui/skeleton";
+
 import { Disc } from "lucide-react";
 
 interface Props {
@@ -20,16 +19,12 @@ const FolderTree: React.FC<{ folder: Folder; parentPath: string }> = ({
     parentPath,
 }) => {
     const currentPath = `${parentPath}/${folder.id}`;
-    const { files } = useUserDiskStore();
-    const currentFiles = files.filter((file) => file.folderId === folder.id);
 
     return (
         <div className="pl-2 border-l border-primary/30">
             <Link href={currentPath}>
                 <div className="py-1 pl-2 hover:bg-primary/20 rounded cursor-pointer transition-all">
-                    {currentFiles.length > 0
-                        ? `${folder.name} (${currentFiles.length})`
-                        : folder.name}
+                    {folder.name}
                 </div>
             </Link>
             {folder.children && folder.children.length > 0 && (
@@ -69,6 +64,12 @@ export const SideBar: React.FC<Props> = ({ className }) => {
                 </Link>
                 <div>
                     <h3 className="mb-3 border-b">Ваші папки:</h3>
+                    <Link href={`/user/${userId}`}>
+                        <div className="py-1 pl-2 hover:bg-primary/20 rounded cursor-pointer transition-all">
+                            <h4>Головна</h4>
+                        </div>
+                    </Link>
+                    <h4></h4>
                     <div>
                         {folders.map((folder: Folder) => (
                             <FolderTree
