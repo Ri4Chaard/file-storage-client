@@ -3,11 +3,17 @@ import axiosInstance from "./instance";
 
 export const sendCode = async (data: {
     phone: string;
-}): Promise<{ registered?: boolean; verified?: boolean; message: string }> => {
+}): Promise<{
+    registered?: boolean;
+    verified?: boolean;
+    expiresAt?: Date;
+    message: string;
+}> => {
     return (
         await axiosInstance.post<{
             registered?: boolean;
             verified?: boolean;
+            expiresAt?: Date;
             message: string;
         }>(ApiRoutes.SEND_CODE, {
             ...data,

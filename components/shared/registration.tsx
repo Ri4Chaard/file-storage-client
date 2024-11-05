@@ -17,6 +17,7 @@ export const Registration: React.FC<Props> = ({ className }) => {
             {registrationState === "send" && <SendCode />}
             {registrationState === "verify" && <VerifyCode />}
             {registrationState === "register" && <RegisterForm />}
+            {/* <VerifyCode /> */}
         </div>
     );
 };

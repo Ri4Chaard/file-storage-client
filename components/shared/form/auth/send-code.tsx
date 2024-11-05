@@ -10,13 +10,16 @@ import { useAuthPageStore } from "@/store/auth-page-store";
 import toast from "react-hot-toast";
 import { Form } from "@/components/ui/form";
 import { FormFieldPhoneInput } from "../form-field-phone-input";
+import { AxiosError } from "axios";
+import { ErrorResponse } from "@/services/instance";
 
 interface Props {
     className?: string;
 }
 
 export const SendCode: React.FC<Props> = ({ className }) => {
-    const { setPhone, onChangeState, onSwitchType } = useAuthPageStore();
+    const { setPhone, setExpiresAt, onChangeState, onSwitchType } =
+        useAuthPageStore();
     const form = useForm<{ phone: string }>({
         resolver: zodResolver(
             z.object({
@@ -39,13 +42,22 @@ export const SendCode: React.FC<Props> = ({ className }) => {
                     toast.error("Ви вже зареєстровані!");
                 } else if (resp.verified) {
                     onChangeState("register");
+                } else if (resp.expiresAt) {
+                    setExpiresAt(resp.expiresAt);
+                    onChangeState("verify");
                 } else {
                     onChangeState("verify");
                     toast.success("Код відправлено!");
                 }
             });
-        } catch (e) {
-            console.log(e);
+        } catch (e: unknown) {
+            const error = e as AxiosError<ErrorResponse>;
+            if (error.response && error.response.data?.error) {
+                toast.error(error.response.data.error);
+            } else {
+                toast.error("Виникла помилка при повторній відправки коду.");
+            }
+            console.log(error);
         }
     };
 

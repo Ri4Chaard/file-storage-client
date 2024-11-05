@@ -20,11 +20,10 @@ export const downloadSelectedFiles = async () => {
         "головної папки";
     const description =
         selectedIds.length === 0
-            ? `Завантаження архіву ${folderName}`
-            : `Завантаження архіву ${folderName} з (${selectedIds.length}) файлами`;
+            ? ` ${folderName}`
+            : ` ${folderName} з (${selectedIds.length}) файлами`;
 
-    const archiveName =
-        folders.find((folder) => folder.id === parentId)?.name || "main-page";
+    const archiveName = folderName || "main-page";
 
     useUploadStore.getState().addUpload(uploadId, description);
 
@@ -33,12 +32,21 @@ export const downloadSelectedFiles = async () => {
     selectedIds.forEach((id) => unselectFile(id));
 
     try {
-        const data = await Api.files.downloadSelected(selectedFiles, {
-            responseType: "blob",
+        const arrayBuffer = await Api.files.downloadSelected(selectedFiles, {
             withCredentials: true,
+            onDownloadProgress: (progressEvent) => {
+                const progress = Math.round(
+                    (progressEvent.loaded / progressEvent.total!) * 100
+                );
+                useUploadStore.getState().updateUpload(uploadId, progress);
+            },
         });
 
-        const url = window.URL.createObjectURL(new Blob([data]));
+        const blob = new Blob([arrayBuffer], {
+            type: "application/zip",
+        });
+
+        const url = window.URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
         link.setAttribute(
@@ -50,8 +58,11 @@ export const downloadSelectedFiles = async () => {
         link.parentNode!.removeChild(link);
 
         useUploadStore.getState().removeUpload(uploadId);
-    } catch (e) {
-        console.error("Помилка при завантажені архіва:", e);
+        return () => {
+            window.URL.revokeObjectURL(url);
+        };
+    } catch (error) {
+        console.error("Помилка при завантаженні архіву:", error);
         useUploadStore.getState().removeUpload(uploadId);
     }
 };
