@@ -4,8 +4,9 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import { useUserStore } from "@/store/user-store";
 import { UsersTable } from "./admin/users-table";
-import { Header } from "./header";
-import { BackButton } from "./back-button";
+import { Button } from "../ui/button";
+import { AddUserModal } from "./admin/add-user-modal";
+import { signOut } from "next-auth/react";
 
 interface Props {
     className?: string;
@@ -13,13 +14,34 @@ interface Props {
 
 export const Dashboard: React.FC<Props> = ({ className }) => {
     const { fetchUsers } = useUserStore();
+    const [openAddUserModal, setOpenAddUserModal] = React.useState(false);
+
     React.useEffect(() => {
         fetchUsers();
     }, []);
     return (
         <div className={cn("", className)}>
-            <BackButton className="mb-10" />
+            <div className="flex items-center justify-between mb-5">
+                <Button
+                    onClick={() => setOpenAddUserModal(true)}
+                    variant="outline"
+                >
+                    Додати користувача
+                </Button>
+                <Button
+                    onClick={() => {
+                        signOut();
+                    }}
+                >
+                    Вихід
+                </Button>
+            </div>
             <UsersTable />
+
+            <AddUserModal
+                open={openAddUserModal}
+                onClose={() => setOpenAddUserModal(false)}
+            />
         </div>
     );
 };

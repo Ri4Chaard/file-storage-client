@@ -34,7 +34,7 @@ export const AdminProfilePanel: React.FC<Props> = ({ className }) => {
                     ) : (
                         <Skeleton className="w-[150px] h-6" />
                     )}
-                    <Link className="" href={"/admin"}>
+                    <Link className="" href="/admin-dashboard">
                         <Button className="border border-secondary">
                             Admin
                         </Button>

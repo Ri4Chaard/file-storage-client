@@ -16,7 +16,7 @@ export const AdminPanel: React.FC<Props> = ({ className }) => {
 
     return (
         <div className={cn("flex flex-col gap-5 w-full", className)}>
-            <Link href="/dashboard">
+            <Link href="/admin-dashboard">
                 <Button>Переглянути користувачів</Button>
             </Link>
             <Button onClick={() => setOpenAddUserModal(true)} variant="outline">
