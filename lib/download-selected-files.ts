@@ -20,8 +20,8 @@ export const downloadSelectedFiles = async () => {
         "головної папки";
     const description =
         selectedIds.length === 0
-            ? ` ${folderName}`
-            : ` ${folderName} з (${selectedIds.length}) файлами`;
+            ? `Завантаження архіву ${folderName}`
+            : `Завантаження архіву ${folderName} з (${selectedIds.length}) файлами`;
 
     const archiveName = folderName || "main-page";
 
@@ -33,6 +33,7 @@ export const downloadSelectedFiles = async () => {
 
     try {
         const arrayBuffer = await Api.files.downloadSelected(selectedFiles, {
+            responseType: "arraybuffer",
             withCredentials: true,
             onDownloadProgress: (progressEvent) => {
                 const progress = Math.round(
