@@ -10,6 +10,7 @@ export interface UserDiskState {
     files: IFile[];
     userId: number | undefined;
     parentId: number | undefined;
+    orderId: string | undefined;
     error: boolean;
     loading: boolean;
     selectedFiles: number[];
@@ -38,6 +39,7 @@ export const useUserDiskStore = create<UserDiskState>((set, get) => ({
     files: [],
     userId: undefined,
     parentId: undefined,
+    orderId: undefined,
     error: false,
     loading: true,
     selectedFiles: [],
@@ -46,11 +48,11 @@ export const useUserDiskStore = create<UserDiskState>((set, get) => ({
     fetchUserDisk: async (userId, parentId) => {
         try {
             set({ loading: true, error: false });
-            const { folders, files } = await Api.users.getUserDisk(
+            const { folders, files, orderId } = await Api.users.getUserDisk(
                 userId,
                 parentId
             );
-            set({ folders, files, userId, parentId });
+            set({ folders, files, userId, parentId, orderId });
         } catch (e) {
             console.log(e);
             set({ error: true });

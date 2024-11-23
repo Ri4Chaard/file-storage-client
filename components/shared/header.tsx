@@ -18,8 +18,7 @@ interface Props {
 }
 
 export const Header: React.FC<Props> = ({ folderId, className }) => {
-    const { folders } = useUserDiskStore();
-    const { data: session } = useSession();
+    const { folders, orderId } = useUserDiskStore();
 
     const currentFolder = findFolderById(folders, Number(folderId));
 
@@ -33,7 +32,7 @@ export const Header: React.FC<Props> = ({ folderId, className }) => {
                     {useSession().status === "loading" ? (
                         <Skeleton className="w-[200px] h-[32px] bg-primary/10" />
                     ) : (
-                        <span>{session?.user.phone}</span>
+                        <span>#{orderId}</span>
                     )}
                 </h2>
             </div>

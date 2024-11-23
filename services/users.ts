@@ -15,14 +15,15 @@ export const getAll = async (id?: number): Promise<User[]> => {
 export const getUserDisk = async (
     userId: number,
     parentId?: number
-): Promise<{ folders: Folder[]; files: IFile[] }> => {
+): Promise<{ folders: Folder[]; files: IFile[]; orderId: string }> => {
     return (
-        await axiosInstance.get<{ folders: Folder[]; files: IFile[] }>(
-            ApiRoutes.USER_DISK,
-            {
-                params: { userId, parentId: parentId ? parentId : null },
-            }
-        )
+        await axiosInstance.get<{
+            folders: Folder[];
+            files: IFile[];
+            orderId: string;
+        }>(ApiRoutes.USER_DISK, {
+            params: { userId, parentId: parentId ? parentId : null },
+        })
     ).data;
 };
 

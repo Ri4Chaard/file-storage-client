@@ -35,6 +35,7 @@ export const authOptions: AuthOptions = {
         async jwt({ token, user }) {
             if (user) {
                 token.id = String(user.id);
+                token.orderId = user.orderId;
                 token.role = user.role;
                 token.phone = user.phone;
                 token.accessToken = user.token;
@@ -44,6 +45,7 @@ export const authOptions: AuthOptions = {
 
         async session({ session, token }) {
             session.user.id = token.id;
+            session.user.orderId = token.orderId;
             session.user.role = token.role;
             session.user.phone = token.phone;
             session.accessToken = token.accessToken;

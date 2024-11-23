@@ -26,7 +26,7 @@ export const Dashboard: React.FC<Props> = ({ className }) => {
                     onClick={() => setOpenAddUserModal(true)}
                     variant="outline"
                 >
-                    Додати користувача
+                    Додати замовлення
                 </Button>
                 <Button
                     onClick={() => {

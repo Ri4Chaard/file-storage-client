@@ -23,9 +23,10 @@ export const AddUserModal: React.FC<Props> = ({ open, onClose, className }) => {
         <Dialog open={open} onOpenChange={handleClose}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Додати користувача</DialogTitle>
+                    <DialogTitle>Додати замовлення</DialogTitle>
                     <DialogDescription>
-                        Заповніть форму, щоб додати нового користувача
+                        Заповніть форму, щоб додати нового користувача або
+                        оновити замовлення.
                     </DialogDescription>
                 </DialogHeader>
 
