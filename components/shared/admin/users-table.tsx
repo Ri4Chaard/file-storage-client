@@ -13,7 +13,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { User } from "@/services/auth";
 import { filesize } from "filesize";
 import Link from "next/link";
-import { ArrowRight, Pencil, PencilLine } from "lucide-react";
+import { ArrowRight, Pencil, PencilLine, Scroll } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import axiosInstance from "@/services/instance";
 import { Textarea } from "@/components/ui/textarea";
@@ -77,6 +77,9 @@ export const UsersTable: React.FC<Props> = ({ className }) => {
                     <TableHead className="px-4 py-2 text-left text-gray-700 font-semibold">
                         Коментар
                     </TableHead>
+                    <TableHead className="px-4 py-2 text-left text-gray-700 font-semibold">
+                        Логи входів
+                    </TableHead>
                     <TableHead className="px-4 py-2 text-left text-gray-700 font-semibold"></TableHead>
                 </TableRow>
             </TableHeader>
@@ -90,6 +93,9 @@ export const UsersTable: React.FC<Props> = ({ className }) => {
                               </TableCell>
                               <TableCell>
                                   <Skeleton className="w-[178px] h-[14px]" />
+                              </TableCell>
+                              <TableCell>
+                                  <Skeleton className="w-[220px] h-[14px]" />
                               </TableCell>
                               <TableCell>
                                   <Skeleton className="w-[220px] h-[14px]" />
@@ -158,6 +164,11 @@ export const UsersTable: React.FC<Props> = ({ className }) => {
                                       ) : (
                                           <Pencil width={16} height={16} />
                                       )}
+                                  </Button>
+                              </TableCell>
+                              <TableCell>
+                                  <Button variant="ghost">
+                                      <Scroll width={16} height={16} />
                                   </Button>
                               </TableCell>
                               <TableCell>

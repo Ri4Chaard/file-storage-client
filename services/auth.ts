@@ -4,6 +4,12 @@ import { IFile } from "./files";
 import { Folder } from "./folders";
 import axiosInstance from "./instance";
 
+interface LoginLogs {
+    id: number;
+    userId: number;
+    loggedInAt: Date;
+}
+
 export interface User {
     id: number;
     phone: string;
@@ -11,6 +17,7 @@ export interface User {
     comment: string;
     files?: IFile[];
     folders?: Folder[];
+    loginLogs?: LoginLogs[];
     password: string | null;
     role: "ADMIN" | "USER";
     verified: boolean;
